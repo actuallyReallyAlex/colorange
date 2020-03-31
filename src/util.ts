@@ -1,6 +1,22 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
-// eslint-disable-next-line no-unused-vars
-import { HSLColors, RGBColors } from './types';
+import store from 'app-store-scraper';
+import sharp, { OutputInfo } from 'sharp';
+
+import { AppStoreScraperApp, HSLColors, RGBColors } from './types';
+
+export const saveImage = async (
+  buffer: Buffer,
+  path: string,
+): Promise<OutputInfo> => sharp(buffer).toFile(path);
+
+export const getArtworkUrl = async (appName: string): Promise<string> => {
+  const application: AppStoreScraperApp[] = await store.search({
+    term: appName,
+    num: 1,
+  });
+  return application[0].icon;
+};
 
 export const rgb2Hsl = (colors: RGBColors): HSLColors => {
   const r = colors[0] / 255;

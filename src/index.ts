@@ -1,67 +1,49 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
-import chalk from 'chalk';
 import ColorThief from 'colorthief';
+import { promises } from 'fs';
+import fetch from 'node-fetch';
 import path from 'path';
-// eslint-disable-next-line no-unused-vars
-import { HSLColors, RGBColors } from './types';
-
-import { rgb2Hsl, hsl2rgb, sortByHue } from './util';
+import { readIt } from 'pickitt';
+import sharp from 'sharp';
+import { getArtworkUrl, saveImage } from './util';
+import { App } from './types';
 
 const main = async (): Promise<void> => {
-  const img0 = path.join(__dirname, '../data/0.png');
-  const img1 = path.join(__dirname, '../data/1.png');
-  const img2 = path.join(__dirname, '../data/2.png');
-  const img3 = path.join(__dirname, '../data/3.png');
-  const img4 = path.join(__dirname, '../data/4.png');
-
   try {
-    const color0 = await ColorThief.getColor(img0);
-    const color1 = await ColorThief.getColor(img1);
-    const color2 = await ColorThief.getColor(img2);
-    const color3 = await ColorThief.getColor(img3);
-    const color4 = await ColorThief.getColor(img4);
+    const apps: App[] = await readIt(path.join(__dirname, '../data/apps.json'));
 
-    console.log({
-      color0,
-      color1,
-      color2,
-      color3,
-      color4,
-    });
+    const icons = [];
 
-    const hsl0 = rgb2Hsl(color0);
-    const hsl1 = rgb2Hsl(color1);
-    const hsl2 = rgb2Hsl(color2);
-    const hsl3 = rgb2Hsl(color3);
-    const hsl4 = rgb2Hsl(color4);
+    for (let i = 0; i < apps.length; i++) {
+      const app: App = apps[i];
+      const icon = await getArtworkUrl(app.name);
+      icons.push(icon);
+    }
 
-    console.log({
-      hsl0,
-      hsl1,
-      hsl2,
-      hsl3,
-      hsl4,
-    });
+    for (let i = 0; i < icons.length; i++) {
+      const icon = icons[i];
+      const response = await fetch(icons[i]);
+      const buffer = await response.buffer();
+      await saveImage(buffer, `icon${i}.jpg`);
 
-    const sorted = sortByHue([hsl0, hsl1, hsl2, hsl3, hsl4]);
-
-    console.log({ sorted });
-
-    const coolColors = sorted.map((colors: HSLColors) => hsl2rgb(colors));
-
-    coolColors.forEach((color: RGBColors) => {
-      console.log(
-        chalk.rgb(
-          color[0],
-          color[1],
-          // eslint-disable-next-line comma-dangle
-          color[2]
-          // eslint-disable-next-line comma-dangle
-        )('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+      const color = await ColorThief.getColor(
+        path.join(__dirname, `../icon${i}.jpg`),
       );
-    });
+      console.log(icon);
+      console.log(i);
+      console.log(color);
+    }
+
+    for (let i = 0; i < icons.length; i++) {
+      await promises.unlink(path.join(__dirname, `../icon${i}.jpg`));
+    }
+
+    console.log('done');
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };
 
