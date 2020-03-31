@@ -4,6 +4,12 @@ export type RGBColors = number[];
 
 export type App = { name: string };
 
+export interface AppData {
+  colors?: number[];
+  icon: string;
+  name: string;
+}
+
 export type AppStoreScraperApp = {
   id: number;
   appId: string;
