@@ -1,3 +1,3 @@
-# app-color-organizer
+# colorange
 
 Organize your apps on your phone by color.
