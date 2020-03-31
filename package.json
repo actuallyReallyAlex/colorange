@@ -11,7 +11,7 @@
     "lint": "eslint src/**/*",
     "build": "npm run format && npm run lint && tsc",
     "test": "echo \"Error: no test specified\" && exit 0",
-    "start": "node build/index.js"
+    "start": "node --no-warnings build/index.js"
   },
   "repository": {
     "type": "git",
@@ -40,6 +40,7 @@
     "chalk": "^3.0.0",
     "colorthief": "^2.3.0",
     "node-fetch": "^2.6.0",
+    "ora": "^4.0.3",
     "pickitt": "^3.2.0",
     "sharp": "^0.25.2"
   }
