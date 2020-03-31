@@ -44,7 +44,7 @@
           { name: document.getElementById('app-name-5').value },
         ];
 
-        fetch('http://localhost:3000/test', {
+        fetch('/test', {
           method: 'POST',
           body: JSON.stringify({ apps }),
           headers: {
