@@ -2,7 +2,7 @@
   "name": "colorange",
   "version": "0.0.0",
   "description": "Organize your apps on your phone by color.",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint src/**/*",
