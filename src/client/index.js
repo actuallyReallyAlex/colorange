@@ -25,7 +25,8 @@ const App = () => {
   return (
     <div>
       <h1>colorange</h1>
-      <input name="file" onChange={handleInputChange} type="file" />
+      <label htmlFor="file">File</label>
+      <input id="file" name="file" onChange={handleInputChange} type="file" />
       <button onClick={handleUpload} type="button">
         UPLOAD
       </button>
