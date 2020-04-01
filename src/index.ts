@@ -14,7 +14,11 @@ app.use(express.json());
 
 app.use(morgan('dev'));
 
-const whitelistDomains = ['http://localhost:3000', undefined];
+const whitelistDomains = [
+  'http://localhost:3000',
+  'https://colorange.herokuapp.com',
+  undefined,
+];
 
 const corsOptions = {
   origin: (origin: string, cb: Function): void => {
