@@ -4,63 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>colorange</title>
-    <style>
-      #app-names {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 300px;
-      }
-    </style>
   </head>
   <body>
-    <h1>COLORANGE</h1>
-    <form id="app-names">
-      <label for="app-name-1">App Name #1</label>
-      <input id="app-name-1" type="text" />
-      <label for="app-name-2">App Name #2</label>
-      <input id="app-name-2" type="text" />
-      <label for="app-name-3">App Name #3</label>
-      <input id="app-name-3" type="text" />
-      <label for="app-name-4">App Name #4</label>
-      <input id="app-name-4" type="text" />
-      <label for="app-name-5">App Name #5</label>
-      <input id="app-name-5" type="text" />
-    </form>
-    <p id="loading"></p>
-    <button id="test">Test Functionality</button>
-    <p id="results"></p>
-    <script>
-      document.getElementById('test').addEventListener('click', function () {
-        document.getElementById('loading').innerHTML = 'LOADING';
-        document.getElementById('test').disabled = true;
-        document.getElementById('results').innerHTML = '';
-
-        const apps = [
-          { name: document.getElementById('app-name-1').value },
-          { name: document.getElementById('app-name-2').value },
-          { name: document.getElementById('app-name-3').value },
-          { name: document.getElementById('app-name-4').value },
-          { name: document.getElementById('app-name-5').value },
-        ];
-
-        fetch('/test', {
-          method: 'POST',
-          body: JSON.stringify({ apps }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-          .then((response) => response.json())
-          .then((res) => {
-            document.getElementById('loading').innerHTML = '';
-            document.getElementById('results').innerHTML = res;
-            document.getElementById('test').disabled = false;
-
-            console.log(res);
-          })
-          .catch((e) => console.error(e));
-      });
-    </script>
+    <div id="root"></div>
   </body>
 </html>
