@@ -8,7 +8,7 @@ import path from 'path';
 import colorange from './colorange';
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
@@ -33,7 +33,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../dist')));
 
 app.post('/test', async (req, res) => {
   const { apps } = req.body;
