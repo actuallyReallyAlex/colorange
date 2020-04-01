@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
 /* eslint-disable object-curly-newline */
 /* eslint-disable no-await-in-loop */
@@ -12,9 +13,21 @@ import path from 'path';
 
 import { getArtworkUrl, rgb2Hsl, saveImage, sortByHue } from './util';
 
-import { App, AppData } from './types';
+import { App, AppData, AppProcess } from './types';
 
-const colorange = async (apps: App[]): Promise<string[]> => {
+const colorange = async (
+  apps: App[],
+  currentProcesses: AppProcess[],
+  processId: string,
+): Promise<string[]> => {
+  const newProcess = {
+    id: processId,
+    processing: true,
+    sortedNames: null,
+  };
+
+  currentProcesses.push(newProcess);
+
   let currentSpinner = null;
   try {
     const data: AppData[] = [];
@@ -64,6 +77,12 @@ const colorange = async (apps: App[]): Promise<string[]> => {
     sortedData.forEach((app: AppData) => sortedNames.push(app.name));
 
     sortingApplicationsSpinner.succeed('Successfully Sorted Applications');
+
+    const currentProcess = currentProcesses.find(
+      (proc: AppProcess) => proc.id === processId,
+    );
+    currentProcess.sortedNames = sortedNames;
+    currentProcess.processing = false;
     return sortedNames;
   } catch (e) {
     currentSpinner.fail();

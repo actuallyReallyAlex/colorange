@@ -45,3 +45,9 @@ export type AppStoreScraperApp = {
   appletvScreenshots: string[];
   supportedDevices: string[];
 };
+
+export type AppProcess = {
+  id: string;
+  processing: boolean;
+  sortedNames?: string[];
+};

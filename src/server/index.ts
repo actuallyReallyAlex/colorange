@@ -7,8 +7,11 @@ import morgan from 'morgan';
 import multer from 'multer';
 import path from 'path';
 import Papa from 'papaparse';
+import { v4 as uuidv4 } from 'uuid';
 
 import colorange from './colorange';
+
+import { AppProcess } from './types';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -47,13 +50,14 @@ const corsOptions = {
   },
 };
 
+const currentProcesses: AppProcess[] = [];
+
 app.use(cors(corsOptions));
 
 app.use(express.static(path.join(__dirname, '../dist')));
 
 app.post('/upload', upload.single('file'), async (req: any, res: any) => {
   try {
-    req.setTimeout(50000000000);
     console.log(`Received file: ${req.file.originalname}`);
 
     const data = req.file.buffer.toString('utf8');
@@ -85,11 +89,34 @@ app.post('/upload', upload.single('file'), async (req: any, res: any) => {
       name: appData[1].split(/ \(/gm)[0],
     }));
 
-    const sortedColors: string[] = await colorange(finalAppData);
-    res.send(sortedColors);
+    const processId = uuidv4();
+
+    colorange(finalAppData, currentProcesses, processId);
+
+    res.send({ processId });
   } catch (e) {
     console.error(e);
     res.status(500).send();
+  }
+});
+
+app.get('/status', (req, res) => {
+  const { id } = req.query;
+  const currentProcess = currentProcesses.find(
+    (proc: AppProcess) => proc.id === id,
+  );
+
+  if (currentProcess.processing) {
+    console.log('still processing');
+    res.status(202).send();
+  } else {
+    console.log('done processing');
+    const curentProcessIndex = currentProcesses.indexOf(currentProcess);
+    console.log({ curentProcessIndex }); // ? Might fail
+
+    currentProcesses.splice(curentProcessIndex, 1);
+
+    res.send(currentProcess.sortedNames);
   }
 });
 
