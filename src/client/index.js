@@ -1,8 +1,11 @@
+/* eslint-disable import/no-unresolved */
 /* eslint-disable no-console */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import dummyData from './data/example.json';
+import iPhoneImage from './assets/iPhone.png';
 
 const App = () => {
   const [file, setFile] = useState(null);
@@ -51,6 +54,8 @@ const App = () => {
     }
   }, [processId]);
 
+  const handleDummyData = () => setSorted(dummyData);
+
   return (
     <div>
       <h1>colorange</h1>
@@ -59,16 +64,57 @@ const App = () => {
       <button onClick={handleUpload} type="button">
         UPLOAD
       </button>
+      <button onClick={handleDummyData} type="button">
+        Dummy Data
+      </button>
       {processId && <span>LOADING</span>}
+      <img
+        alt="iPhone"
+        src={iPhoneImage}
+        style={{
+          left: 'calc(50% - 250px)',
+          position: 'absolute',
+          width: '500px',
+        }}
+      />
       {sorted && (
-        <div style={{ display: 'flex' }}>
+        <div
+          style={{
+            display: 'grid',
+            height: '975.031px',
+            gridGap: '26px',
+            gridTemplateColumns: '80px 80px 80px 80px',
+            gridTemplateRows: '80px 80px 80px 80px',
+            left: 'calc(50% - 250px)',
+            padding: '50px',
+            position: 'absolute',
+            width: '400px',
+          }}
+        >
           {sorted.map(({ icon, name }, i) => (
-            <div key={i} style={{ display: 'flex', flexDirection: 'column' }}>
+            <div
+              key={i}
+              style={{
+                alignItems: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '80px',
+                width: '80px',
+              }}
+            >
               <img
                 src={`data:image/jpeg;base64,${icon.base64}`}
-                style={{ borderRadius: '10%', height: '100px', width: '100px' }}
+                style={{ borderRadius: '10%', height: '80px', width: '80px' }}
               />
-              <span>{name}</span>
+              <span
+                style={{
+                  textAlign: 'center',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {name}
+              </span>
             </div>
           ))}
         </div>
