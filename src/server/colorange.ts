@@ -19,16 +19,17 @@ const colorange = async (
   apps: App[],
   currentProcesses: AppProcess[],
   processId: string,
-): Promise<string[]> => {
+): Promise<AppData[]> => {
   const newProcess = {
     id: processId,
     processing: true,
-    sortedNames: null,
+    sortedData: null,
   };
 
   currentProcesses.push(newProcess);
 
   let currentSpinner = null;
+
   try {
     const data: AppData[] = [];
 
@@ -36,7 +37,12 @@ const colorange = async (
     currentSpinner = gettingArtworkSpinner;
     for (let i = 0; i < apps.length; i++) {
       const app: App = apps[i];
-      const icon = await getArtworkUrl(app.name);
+      const icon = {
+        buffer: null,
+        url: null,
+      };
+      const iconURL = await getArtworkUrl(app.name);
+      icon.url = iconURL;
       data.push({ colors: null, icon, name: app.name });
     }
     gettingArtworkSpinner.succeed('Successfully Retrieved Artwork URLs');
@@ -44,8 +50,10 @@ const colorange = async (
     const convertingImagesSpinner = ora('Converting Images').start();
     currentSpinner = convertingImagesSpinner;
     for (let i = 0; i < apps.length; i++) {
-      const response = await fetch(data[i].icon);
+      const response = await fetch(data[i].icon.url);
       const buffer = await response.buffer();
+      data[i].icon.base64 = buffer.toString('base64');
+      // TODO - Use the buffer, don't save to disk
       await saveImage(buffer, `icon${i}.jpg`);
 
       const colors = await ColorThief.getColor(
@@ -70,20 +78,18 @@ const colorange = async (
       data[i].colors = rgb2Hsl(app.colors);
     });
 
-    const sortedData = sortByHue(data);
-
-    const sortedNames = [];
-
-    sortedData.forEach((app: AppData) => sortedNames.push(app.name));
+    const sortedAppData = sortByHue(data);
 
     sortingApplicationsSpinner.succeed('Successfully Sorted Applications');
 
     const currentProcess = currentProcesses.find(
       (proc: AppProcess) => proc.id === processId,
     );
-    currentProcess.sortedNames = sortedNames;
+
+    currentProcess.sortedData = sortedAppData;
     currentProcess.processing = false;
-    return sortedNames;
+
+    return sortedAppData;
   } catch (e) {
     currentSpinner.fail();
     console.error(e);
