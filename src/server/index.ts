@@ -3,6 +3,7 @@
 /* eslint-disable no-console */
 import cors from 'cors';
 import express, { Request } from 'express';
+import { promises } from 'fs';
 import morgan from 'morgan';
 import multer from 'multer';
 import path from 'path';
@@ -102,7 +103,7 @@ app.post('/upload', upload.single('file'), async (req: any, res: any) => {
   }
 });
 
-app.get('/status', (req, res) => {
+app.get('/status', async (req, res) => {
   const { id } = req.query;
   const currentProcess = currentProcesses.find(
     (proc: AppProcess) => proc.id === id,
@@ -117,6 +118,11 @@ app.get('/status', (req, res) => {
     console.log({ curentProcessIndex }); // ? Might fail
 
     currentProcesses.splice(curentProcessIndex, 1);
+
+    await promises.writeFile(
+      path.join(__dirname, 'example.json'),
+      JSON.stringify(currentProcess.sortedData),
+    );
 
     res.send(currentProcess.sortedData);
   }
