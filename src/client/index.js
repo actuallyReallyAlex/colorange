@@ -61,9 +61,15 @@ const App = () => {
       </button>
       {processId && <span>LOADING</span>}
       {sorted && (
-        <div>
-          {sorted.map((name, i) => (
-            <p key={i}>{name}</p>
+        <div style={{ display: 'flex' }}>
+          {sorted.map(({ icon, name }, i) => (
+            <div key={i} style={{ display: 'flex', flexDirection: 'column' }}>
+              <img
+                src={`data:image/jpeg;base64,${icon.base64}`}
+                style={{ borderRadius: '10%', height: '100px', width: '100px' }}
+              />
+              <span>{name}</span>
+            </div>
           ))}
         </div>
       )}

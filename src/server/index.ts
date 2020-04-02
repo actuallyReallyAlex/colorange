@@ -65,7 +65,9 @@ app.post('/upload', upload.single('file'), async (req: any, res: any) => {
     const parsedData = Papa.parse(data, {
       complete: (results: any) => {
         console.log(
-          `${req.file.originalname} contains ${results.data.length} entries`,
+          `${req.file.originalname} contains ${
+            results.data.length - 3
+          } entries`,
         );
       },
       error: (err, file, inputElem, reason) => {
@@ -116,7 +118,7 @@ app.get('/status', (req, res) => {
 
     currentProcesses.splice(curentProcessIndex, 1);
 
-    res.send(currentProcess.sortedNames);
+    res.send(currentProcess.sortedData);
   }
 });
 

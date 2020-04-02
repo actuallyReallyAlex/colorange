@@ -4,9 +4,14 @@ export type RGBColors = number[];
 
 export type App = { name: string };
 
+interface IconData {
+  base64?: string;
+  url?: string;
+}
+
 export interface AppData {
   colors?: number[];
-  icon: string;
+  icon: IconData;
   name: string;
 }
 
@@ -49,5 +54,5 @@ export type AppStoreScraperApp = {
 export type AppProcess = {
   id: string;
   processing: boolean;
-  sortedNames?: string[];
+  sortedData?: AppData[];
 };
