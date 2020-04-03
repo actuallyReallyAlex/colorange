@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import dummyData from './data/example.json';
-import iPhoneImage from './assets/iPhone.png';
+import iPhoneImage from './assets/iphone.png';
 
 const App = () => {
   const [file, setFile] = useState(null);
