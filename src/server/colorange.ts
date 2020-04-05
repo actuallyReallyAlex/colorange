@@ -5,14 +5,11 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
-import ColorThief from 'colorthief';
-import { promises } from 'fs';
 import fetch from 'node-fetch';
 import ora from 'ora';
-import path from 'path';
 import Vibrant from 'node-vibrant';
 
-import { getArtworkUrl, rgb2Hsl, saveImage, sortByHue } from './util';
+import { getArtworkUrl, rgb2Hsl, sortByHue } from './util';
 
 import { App, AppData, AppProcess } from './types';
 
@@ -54,38 +51,14 @@ const colorange = async (
       const response = await fetch(data[i].icon.url);
       const buffer = await response.buffer();
       data[i].icon.base64 = buffer.toString('base64');
-      // TODO - Use the buffer, don't save to disk
-      await saveImage(buffer, `icon${i}.jpg`);
 
-      const colors = await ColorThief.getColor(
-        path.join(__dirname, `../icon${i}.jpg`),
-      );
-
-      // const colors = await ColorThief.getPalette(
-      //   path.join(__dirname, `../icon${i}.jpg`),
-      // );
-
-      const v = new Vibrant(path.join(__dirname, `../icon${i}.jpg`));
+      const v = new Vibrant(buffer);
       const palette = await v.getPalette();
-      const mostUsed = Object.values(palette).sort(
-        (a, b) => b.population - a.population,
-      )[0];
-
-      const vibColorPopulation = mostUsed.rgb;
       const vibColorVib = palette.Vibrant.getRgb();
 
-      // data[i].colors = colors;
-      // data[i].colors = vibColorPopulation;
       data[i].colors = vibColorVib;
     }
     convertingImagesSpinner.succeed('Successfully Converted Images');
-
-    const cleaningFilesSpinner = ora('Cleaning Files').start();
-    currentSpinner = cleaningFilesSpinner;
-    for (let i = 0; i < apps.length; i++) {
-      await promises.unlink(path.join(__dirname, `../icon${i}.jpg`));
-    }
-    cleaningFilesSpinner.succeed('Successfully Cleaned Files');
 
     const sortingApplicationsSpinner = ora('Sorting Applications').start();
     currentSpinner = sortingApplicationsSpinner;
