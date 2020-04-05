@@ -110,10 +110,8 @@ app.get('/status', async (req, res) => {
   );
 
   if (currentProcess.processing) {
-    console.log('still processing');
     res.status(202).send();
   } else {
-    console.log('done processing');
     const curentProcessIndex = currentProcesses.indexOf(currentProcess);
     console.log({ curentProcessIndex }); // ? Might fail
 
