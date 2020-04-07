@@ -6,9 +6,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
 import fetch from 'node-fetch';
-import ora from 'ora';
 import Vibrant from 'node-vibrant';
 import ProgressBar from 'progress';
+
+import Application from './models/application';
 
 import { getArtworkUrl, rgb2Hsl, sortByHue } from './util';
 
@@ -27,53 +28,56 @@ const colorange = async (
 
   currentProcesses.push(newProcess);
 
-  let currentSpinner = null;
-
   try {
-    const data: AppData[] = [];
+    const data: any[] = [];
 
     const bar = new ProgressBar(
-      ' Getting Artwork URLs [:bar] :percent (:current / :total) :etas',
+      'Getting Application Information [:bar] :percent (:current / :total) :etas',
       { total: apps.length, width: 20 },
     );
+
     for (let i = 0; i < apps.length; i++) {
       const app: App = apps[i];
-      const icon = {
-        buffer: null,
-        url: null,
-      };
-      const iconURL = await getArtworkUrl(app.name);
-      icon.url = iconURL;
-      data.push({ colors: null, icon, name: app.name });
-      bar.tick();
+
+      const dbApp = await Application.findOne({ name: app.name });
+
+      if (dbApp) {
+        data.push(dbApp);
+        bar.tick();
+      } else {
+        const application = {
+          colors: null,
+          icon: {
+            base64: null,
+            url: null,
+          },
+          name: app.name,
+        };
+
+        application.icon.url = await getArtworkUrl(application.name);
+
+        const response = await fetch(application.icon.url);
+        const buffer = await response.buffer();
+        application.icon.base64 = buffer.toString('base64');
+
+        const v = new Vibrant(buffer);
+        const palette = await v.getPalette();
+        const vibColorVib = palette.Vibrant.getRgb();
+
+        application.colors = rgb2Hsl(vibColorVib);
+
+        data.push(application);
+        const newApp = new Application({
+          colors: application.colors,
+          icon: application.icon,
+          name: application.name,
+        });
+        await newApp.save();
+        bar.tick();
+      }
     }
-    ora('Successfully Retrieved Artwork URLs').succeed();
-
-    const convertingImagesSpinner = ora('Converting Images').start();
-    currentSpinner = convertingImagesSpinner;
-    for (let i = 0; i < apps.length; i++) {
-      const response = await fetch(data[i].icon.url);
-      const buffer = await response.buffer();
-      data[i].icon.base64 = buffer.toString('base64');
-
-      const v = new Vibrant(buffer);
-      const palette = await v.getPalette();
-      const vibColorVib = palette.Vibrant.getRgb();
-
-      data[i].colors = vibColorVib;
-    }
-    convertingImagesSpinner.succeed('Successfully Converted Images');
-
-    const sortingApplicationsSpinner = ora('Sorting Applications').start();
-    currentSpinner = sortingApplicationsSpinner;
-    // * Convert colors from RGB to HSL
-    data.forEach((app: AppData, i: number) => {
-      data[i].colors = rgb2Hsl(app.colors);
-    });
 
     const sortedAppData = sortByHue(data);
-
-    sortingApplicationsSpinner.succeed('Successfully Sorted Applications');
 
     const currentProcess = currentProcesses.find(
       (proc: AppProcess) => proc.id === processId,
@@ -84,7 +88,6 @@ const colorange = async (
 
     return sortedAppData;
   } catch (e) {
-    currentSpinner.fail();
     console.error(e);
     return null;
   }
