@@ -7,8 +7,11 @@
 /* eslint-disable import/extensions */
 import fetch from 'node-fetch';
 import ora from 'ora';
+import mongoose from 'mongoose';
 import Vibrant from 'node-vibrant';
 import ProgressBar from 'progress';
+
+import Application from './models/application';
 
 import { getArtworkUrl, rgb2Hsl, sortByHue } from './util';
 
@@ -30,7 +33,7 @@ const colorange = async (
   let currentSpinner = null;
 
   try {
-    const data: AppData[] = [];
+    const data: any[] = [];
 
     const bar = new ProgressBar(
       ' Getting Artwork URLs [:bar] :percent (:current / :total) :etas',
@@ -38,29 +41,43 @@ const colorange = async (
     );
     for (let i = 0; i < apps.length; i++) {
       const app: App = apps[i];
-      const icon = {
-        buffer: null,
-        url: null,
-      };
-      const iconURL = await getArtworkUrl(app.name);
-      icon.url = iconURL;
-      data.push({ colors: null, icon, name: app.name });
-      bar.tick();
+
+      const dbApp = await Application.findOne({ name: app.name });
+
+      if (dbApp) {
+        data.push(dbApp);
+        bar.tick();
+      } else {
+        const icon = {
+          url: null,
+        };
+
+        const iconURL = await getArtworkUrl(app.name);
+        icon.url = iconURL;
+        data.push({ colors: null, icon, name: app.name });
+        bar.tick();
+      }
     }
     ora('Successfully Retrieved Artwork URLs').succeed();
 
     const convertingImagesSpinner = ora('Converting Images').start();
     currentSpinner = convertingImagesSpinner;
     for (let i = 0; i < apps.length; i++) {
-      const response = await fetch(data[i].icon.url);
-      const buffer = await response.buffer();
-      data[i].icon.base64 = buffer.toString('base64');
+      const app = data[i];
+      const dbApp = await Application.findOne({ name: app.name });
 
-      const v = new Vibrant(buffer);
-      const palette = await v.getPalette();
-      const vibColorVib = palette.Vibrant.getRgb();
+      // ? I think at this point, if it was in the DB, it woud've been pushed in the prev step
+      if (!dbApp) {
+        const response = await fetch(app.icon.url);
+        const buffer = await response.buffer();
+        app.icon.base64 = buffer.toString('base64');
 
-      data[i].colors = vibColorVib;
+        const v = new Vibrant(buffer);
+        const palette = await v.getPalette();
+        const vibColorVib = palette.Vibrant.getRgb();
+
+        app.colors = vibColorVib;
+      }
     }
     convertingImagesSpinner.succeed('Successfully Converted Images');
 
@@ -74,6 +91,23 @@ const colorange = async (
     const sortedAppData = sortByHue(data);
 
     sortingApplicationsSpinner.succeed('Successfully Sorted Applications');
+
+    const storingApplicationsInDBSpinner = ora(
+      'Storing Applications in DB',
+    ).start();
+    sortedAppData.forEach(async (application: AppData) => {
+      const dbApp = await Application.findOne({ name: application.name });
+
+      if (!dbApp) {
+        const newApp = new Application({
+          colors: application.colors,
+          icon: application.icon,
+          name: application.name,
+        });
+        await newApp.save();
+      }
+    });
+    storingApplicationsInDBSpinner.succeed('Applications Stored in Database');
 
     const currentProcess = currentProcesses.find(
       (proc: AppProcess) => proc.id === processId,
