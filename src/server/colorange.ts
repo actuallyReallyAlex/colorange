@@ -33,7 +33,7 @@ const colorange = async (
 
     const bar = new ProgressBar(
       'Getting Application Information [:bar] :percent (:current / :total) :etas',
-      { total: apps.length, width: 20 },
+      { stream: process.stdout, total: apps.length, width: 20 },
     );
 
     for (let i = 0; i < apps.length; i++) {
