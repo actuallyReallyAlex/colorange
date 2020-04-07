@@ -6,8 +6,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
 import fetch from 'node-fetch';
-import ora from 'ora';
-import mongoose from 'mongoose';
 import Vibrant from 'node-vibrant';
 import ProgressBar from 'progress';
 
@@ -30,15 +28,14 @@ const colorange = async (
 
   currentProcesses.push(newProcess);
 
-  let currentSpinner = null;
-
   try {
     const data: any[] = [];
 
     const bar = new ProgressBar(
-      ' Getting Artwork URLs [:bar] :percent (:current / :total) :etas',
+      'Getting Application Information [:bar] :percent (:current / :total) :etas',
       { total: apps.length, width: 20 },
     );
+
     for (let i = 0; i < apps.length; i++) {
       const app: App = apps[i];
 
@@ -48,66 +45,39 @@ const colorange = async (
         data.push(dbApp);
         bar.tick();
       } else {
-        const icon = {
-          url: null,
+        const application = {
+          colors: null,
+          icon: {
+            base64: null,
+            url: null,
+          },
+          name: app.name,
         };
 
-        const iconURL = await getArtworkUrl(app.name);
-        icon.url = iconURL;
-        data.push({ colors: null, icon, name: app.name });
-        bar.tick();
-      }
-    }
-    ora('Successfully Retrieved Artwork URLs').succeed();
+        application.icon.url = await getArtworkUrl(application.name);
 
-    const convertingImagesSpinner = ora('Converting Images').start();
-    currentSpinner = convertingImagesSpinner;
-    for (let i = 0; i < apps.length; i++) {
-      const app = data[i];
-      const dbApp = await Application.findOne({ name: app.name });
-
-      // ? I think at this point, if it was in the DB, it woud've been pushed in the prev step
-      if (!dbApp) {
-        const response = await fetch(app.icon.url);
+        const response = await fetch(application.icon.url);
         const buffer = await response.buffer();
-        app.icon.base64 = buffer.toString('base64');
+        application.icon.base64 = buffer.toString('base64');
 
         const v = new Vibrant(buffer);
         const palette = await v.getPalette();
         const vibColorVib = palette.Vibrant.getRgb();
 
-        app.colors = vibColorVib;
-      }
-    }
-    convertingImagesSpinner.succeed('Successfully Converted Images');
+        application.colors = rgb2Hsl(vibColorVib);
 
-    const sortingApplicationsSpinner = ora('Sorting Applications').start();
-    currentSpinner = sortingApplicationsSpinner;
-    // * Convert colors from RGB to HSL
-    data.forEach((app: AppData, i: number) => {
-      data[i].colors = rgb2Hsl(app.colors);
-    });
-
-    const sortedAppData = sortByHue(data);
-
-    sortingApplicationsSpinner.succeed('Successfully Sorted Applications');
-
-    const storingApplicationsInDBSpinner = ora(
-      'Storing Applications in DB',
-    ).start();
-    sortedAppData.forEach(async (application: AppData) => {
-      const dbApp = await Application.findOne({ name: application.name });
-
-      if (!dbApp) {
+        data.push(application);
         const newApp = new Application({
           colors: application.colors,
           icon: application.icon,
           name: application.name,
         });
         await newApp.save();
+        bar.tick();
       }
-    });
-    storingApplicationsInDBSpinner.succeed('Applications Stored in Database');
+    }
+
+    const sortedAppData = sortByHue(data);
 
     const currentProcess = currentProcesses.find(
       (proc: AppProcess) => proc.id === processId,
@@ -118,7 +88,6 @@ const colorange = async (
 
     return sortedAppData;
   } catch (e) {
-    currentSpinner.fail();
     console.error(e);
     return null;
   }
