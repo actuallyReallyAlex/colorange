@@ -3,10 +3,6 @@ import mongoose from 'mongoose';
 
 const applicationSchema = new mongoose.Schema(
   {
-    colors: {
-      required: true,
-      type: [Number],
-    },
     icon: {
       base64: {
         required: true,
@@ -15,6 +11,20 @@ const applicationSchema = new mongoose.Schema(
       url: {
         required: true,
         type: String,
+      },
+    },
+    luminosity: {
+      h2: {
+        required: true,
+        type: Number,
+      },
+      lum: {
+        required: true,
+        type: Number,
+      },
+      v2: {
+        required: true,
+        type: Number,
       },
     },
     name: {

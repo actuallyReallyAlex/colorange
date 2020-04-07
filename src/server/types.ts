@@ -9,9 +9,15 @@ interface IconData {
   url?: string;
 }
 
+interface LuminosityData {
+  h2: number;
+  lum: number;
+  v2: number;
+}
+
 export interface AppData {
-  colors?: number[];
   icon: IconData;
+  luminosity: LuminosityData;
   name: string;
 }
 
