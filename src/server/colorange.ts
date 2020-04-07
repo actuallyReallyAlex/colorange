@@ -8,6 +8,7 @@
 import fetch from 'node-fetch';
 import ora from 'ora';
 import Vibrant from 'node-vibrant';
+import ProgressBar from 'progress';
 
 import { getArtworkUrl, rgb2Hsl, sortByHue } from './util';
 
@@ -31,8 +32,10 @@ const colorange = async (
   try {
     const data: AppData[] = [];
 
-    const gettingArtworkSpinner = ora('Getting Artwork URLs').start();
-    currentSpinner = gettingArtworkSpinner;
+    const bar = new ProgressBar(
+      ' Getting Artwork URLs [:bar] :percent (:current / :total) :etas',
+      { total: apps.length, width: 20 },
+    );
     for (let i = 0; i < apps.length; i++) {
       const app: App = apps[i];
       const icon = {
@@ -42,8 +45,9 @@ const colorange = async (
       const iconURL = await getArtworkUrl(app.name);
       icon.url = iconURL;
       data.push({ colors: null, icon, name: app.name });
+      bar.tick();
     }
-    gettingArtworkSpinner.succeed('Successfully Retrieved Artwork URLs');
+    ora('Successfully Retrieved Artwork URLs').succeed();
 
     const convertingImagesSpinner = ora('Converting Images').start();
     currentSpinner = convertingImagesSpinner;
