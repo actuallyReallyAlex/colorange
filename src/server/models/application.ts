@@ -4,13 +4,16 @@ import mongoose from 'mongoose';
 const applicationSchema = new mongoose.Schema(
   {
     colors: {
+      required: true,
       type: [Number],
     },
     icon: {
       base64: {
+        required: true,
         type: String,
       },
       url: {
+        required: true,
         type: String,
       },
     },
