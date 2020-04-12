@@ -5,110 +5,91 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
-import { promises } from 'fs';
 import fetch from 'node-fetch';
-import ora from 'ora';
-import path from 'path';
+import ProgressBar from 'progress';
+import mongoose from 'mongoose';
 import Vibrant from 'node-vibrant';
 
-import { getArtworkUrl, rgb2Hsl, saveImage, sortByHue } from './util';
+import Application from './models/application';
 
-import { App } from './types';
+import { getArtworkUrl, rgb2Hsl, sortByHue, hsl2rgb } from './util';
 
-export interface AppData {
-  colors?: number[];
-  icon: { url?: string };
-  name: string;
-  palette?: object;
-}
+import { App, AppData } from './types';
+
+mongoose.connect(process.env.MONGODB_URL, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true,
+});
 
 const main = async () => {
-  const appList = [{ name: 'NYTimes' }, { name: 'Yelp' }, { name: 'YouTube ' }];
+  const appList = [
+    { name: 'Uber' },
+    { name: 'Onyx' },
+    { name: 'Six Pack in 30 Days' },
+    { name: 'NYTimes' },
+    { name: 'Postmates' },
+    { name: 'YouTube' },
+    { name: "Harry's" },
+    { name: 'Yelp' },
+    { name: 'Nike Run Club' },
+  ];
 
   const colorange = async (): Promise<any[]> => {
-    let currentSpinner = null;
-
     try {
-      const data: AppData[] = [];
+      const data: any[] = [];
 
-      const gettingArtworkSpinner = ora('Getting Artwork URLs').start();
-      currentSpinner = gettingArtworkSpinner;
+      const bar = new ProgressBar(
+        'Getting Application Information [:bar] :percent (:current / :total) :etas',
+        { total: appList.length, width: 20 },
+      );
+
       for (let i = 0; i < appList.length; i++) {
         const app: App = appList[i];
-        const icon = {
-          buffer: null,
-          url: null,
-        };
-        const iconURL = await getArtworkUrl(app.name);
-        icon.url = iconURL;
-        data.push({ colors: null, icon, name: app.name });
-      }
-      gettingArtworkSpinner.succeed('Successfully Retrieved Artwork URLs');
 
-      const convertingImagesSpinner = ora('Converting Images').start();
-      currentSpinner = convertingImagesSpinner;
-      for (let i = 0; i < appList.length; i++) {
-        const response = await fetch(data[i].icon.url);
-        const buffer = await response.buffer();
-        // data[i].icon.base64 = buffer.toString('base64');
-        // TODO - Use the buffer, don't save to disk
-        await saveImage(buffer, `icon${i}.jpg`);
+        const dbApp = await Application.findOne({ name: app.name });
 
-        // const colors = await ColorThief.getColor(
-        //   path.join(__dirname, `../icon${i}.jpg`),
-        // );
+        if (dbApp) {
+          data.push(dbApp);
+          bar.tick();
+        } else {
+          const application = {
+            colors: null,
+            icon: {
+              base64: null,
+              url: null,
+            },
+            name: app.name,
+          };
 
-        // const colors = await ColorThief.getPalette(
-        //   path.join(__dirname, `../icon${i}.jpg`),
-        // );
+          application.icon.url = await getArtworkUrl(application.name);
 
-        const v = new Vibrant(path.join(__dirname, `../icon${i}.jpg`));
-        const palette = await v.getPalette();
-        // const mostUsed = Object.values(palette).sort(
-        //   (a, b) => b.population - a.population,
-        // )[0];
+          const response = await fetch(application.icon.url);
+          const buffer = await response.buffer();
+          application.icon.base64 = buffer.toString('base64');
 
-        // const vibColorPopulation = mostUsed.rgb;
-        const vibColorVib = palette.Vibrant.getRgb();
+          const v = new Vibrant(buffer);
+          const palette = await v.getPalette();
+          const vibColorVib = palette.Vibrant.getRgb();
 
-        if (data[i].name === 'YouTube') {
-          console.log(`YouTube Palette: ${JSON.stringify(palette, null, 2)}`);
+          application.colors = rgb2Hsl(vibColorVib);
+
+          data.push(application);
+          const newApp = new Application({
+            colors: application.colors,
+            icon: application.icon,
+            name: application.name,
+          });
+          await newApp.save();
+          bar.tick();
         }
-
-        // data[i].colors = colors;
-        // data[i].colors = vibColorPopulation;
-        data[i].palette = palette;
-        data[i].colors = vibColorVib;
       }
-      convertingImagesSpinner.succeed('Successfully Converted Images');
-
-      const cleaningFilesSpinner = ora('Cleaning Files').start();
-      currentSpinner = cleaningFilesSpinner;
-      for (let i = 0; i < appList.length; i++) {
-        await promises.unlink(path.join(__dirname, `../icon${i}.jpg`));
-      }
-      cleaningFilesSpinner.succeed('Successfully Cleaned Files');
-
-      const sortingApplicationsSpinner = ora('Sorting Applications').start();
-      currentSpinner = sortingApplicationsSpinner;
-      // * Convert colors from RGB to HSL
-      data.forEach((app: AppData, i: number) => {
-        data[i].colors = rgb2Hsl(app.colors);
-      });
 
       const sortedAppData = sortByHue(data);
 
-      sortingApplicationsSpinner.succeed('Successfully Sorted Applications');
-
-      const cleanerSortedAppData = sortedAppData.map((app: AppData) => ({
-        colors: app.colors,
-        name: app.name,
-        palette: app.palette,
-      }));
-
-      return cleanerSortedAppData;
+      return sortedAppData;
     } catch (e) {
-      currentSpinner.fail();
       console.error(e);
       return null;
     }
@@ -116,7 +97,45 @@ const main = async () => {
 
   const sorted = await colorange();
 
-  console.log(JSON.stringify(sorted, null, 2));
+  // const cleanSorted = sorted.map((app: AppData) => ({
+  //   // colors: app.colors,
+  //   name: app.name,
+  // }));
+
+  // const withLums = cleanSorted.map((app) => {
+  //   const rgb = hsl2rgb(app.colors);
+  //   let lum = Math.sqrt(0.241 * rgb[0] + 0.691 * rgb[1] + 0.068 * rgb[2]);
+
+  //   const repetitions = 8;
+
+  //   const h2 = Number(app.colors[0] * repetitions);
+  //   const lum2 = Number(lum * repetitions);
+  //   let v2 = Number(app.colors[2] * repetitions);
+
+  //   if (h2 % 2 === 1) {
+  //     v2 = repetitions - v2;
+  //     lum = repetitions - lum;
+  //   }
+
+  //   const lumSort = { h2, lum, v2 };
+  //   return { colors: app.colors, lumSort, name: app.name };
+  // });
+
+  // // console.log(JSON.stringify(withLums, null, 2));
+
+  // const final = [...withLums].sort((a, b) => {
+  //   let sortBy = 'h2';
+  //   if (a.lumSort.h2 === b.lumSort.h2) {
+  //     sortBy = 'lum';
+  //   }
+  //   if (a.lumSort.h2 === b.lumSort.h2 && a.lumSort.lum === b.lumSort.lum) {
+  //     sortBy = 'v2';
+  //   }
+
+  //   return b.lumSort[sortBy] - a.lumSort[sortBy];
+  // });
+
+  // console.log(JSON.stringify(final, null, 2));
 };
 
 main();

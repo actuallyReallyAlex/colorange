@@ -14,7 +14,8 @@
     "build-server": "npm run format && npm run lint && tsc",
     "build": "npm run build-client && npm run build-server",
     "start": "node --no-warnings build/index.js",
-    "dev": "env-cmd npm start"
+    "dev": "env-cmd npm start",
+    "tester": "env-cmd node build/tester.js"
   },
   "repository": {
     "type": "git",
