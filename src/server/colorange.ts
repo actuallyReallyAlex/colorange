@@ -97,7 +97,6 @@ const colorange = async (
       }
     }
 
-    // const sortedAppData = sortByHue(data);
     const sortByLuminosity = (applicationData: any[]) =>
       [...applicationData].sort((a, b) => {
         let sortBy = 'h2';
