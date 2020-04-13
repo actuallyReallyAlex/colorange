@@ -1,4 +1,5 @@
 import App from './app';
+import ScriptsController from './controllers/scripts';
 import StatusController from './controllers/status';
 import UploadController from './controllers/upload';
 
@@ -8,6 +9,7 @@ const currentProcesses: AppProcess[] = [];
 
 const app = new App(
   [
+    new ScriptsController(),
     new StatusController(currentProcesses),
     new UploadController(currentProcesses),
   ],
