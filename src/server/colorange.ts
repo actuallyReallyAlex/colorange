@@ -1,19 +1,10 @@
-/* eslint-disable operator-linebreak */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-console */
-/* eslint-disable object-curly-newline */
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/extensions */
 import fetch from 'node-fetch';
 import Vibrant from 'node-vibrant';
 import ProgressBar from 'progress';
 
 import Application from './models/application';
 
-import { getArtworkUrl, rgb2Hsl, sortByHue } from './util';
+import { getArtworkUrl, rgb2Hsl } from './util';
 
 import { App, AppData, AppProcess } from './types';
 
@@ -31,6 +22,7 @@ const colorange = async (
   currentProcesses.push(newProcess);
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any[] = [];
 
     const bar = new ProgressBar(
@@ -38,7 +30,7 @@ const colorange = async (
       { total: apps.length, width: 20 },
     );
 
-    for (let i = 0; i < apps.length; i++) {
+    for (let i = 0; i < apps.length; i += 1) {
       const app: App = apps[i];
 
       const dbApp = await Application.findOne({ name: app.name });
@@ -76,7 +68,7 @@ const colorange = async (
         );
 
         const h2 = Number(hsl[0] * repetitions);
-        const lum2 = Number(lum * repetitions);
+        // const lum2 = Number(lum * repetitions);
         let v2 = Number(hsl[2] * repetitions);
 
         if (h2 % 2 === 1) {
@@ -97,7 +89,7 @@ const colorange = async (
       }
     }
 
-    const sortByLuminosity = (applicationData: any[]) =>
+    const sortByLuminosity = (applicationData: AppData[]): AppData[] =>
       [...applicationData].sort((a, b) => {
         let sortBy = 'h2';
         if (a.luminosity.h2 === b.luminosity.h2) {

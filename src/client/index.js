@@ -1,7 +1,4 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable no-console */
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
+/* global document, fetch, FormData */
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import dummyData from './data/example.json';

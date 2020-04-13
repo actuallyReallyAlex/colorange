@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/extensions */
 import ttyStream from 'tty';
 import App from './app';
 import StatusController from './controllers/status';

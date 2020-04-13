@@ -1,18 +1,16 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/extensions */
-/* eslint-disable no-console */
 import cors from 'cors';
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import path from 'path';
+import { Controller } from './types';
 
 class App {
   public app: express.Application;
 
-  public port: number;
+  public port: number | string;
 
-  constructor(controllers: any[], port: any) {
+  constructor(controllers: Controller[], port: number | string) {
     this.app = express();
     this.port = port;
 
@@ -20,7 +18,7 @@ class App {
     this.initializeControllers(controllers);
   }
 
-  private initializeMiddlewares() {
+  private initializeMiddlewares(): void {
     mongoose.connect(process.env.MONGODB_URL, {
       useNewUrlParser: true,
       useCreateIndex: true,
@@ -50,7 +48,7 @@ class App {
     this.app.use(cors(corsOptions));
   }
 
-  private initializeControllers(controllers: any[]) {
+  private initializeControllers(controllers: Controller[]): void {
     controllers.forEach((controller) => {
       this.app.use('/', controller.router);
     });
@@ -62,7 +60,7 @@ class App {
     });
   }
 
-  public listen() {
+  public listen(): void {
     this.app.listen(this.port, () => {
       console.log(`Server is listening on port: ${this.port}`);
     });

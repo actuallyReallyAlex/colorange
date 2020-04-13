@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import mongoose from 'mongoose';
 
 const applicationSchema = new mongoose.Schema(
@@ -35,11 +34,8 @@ const applicationSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-function applicationToJSON() {
-  const application = this;
-  const applicationObject = application.toObject();
-
-  return applicationObject;
+function applicationToJSON(): void {
+  return this.toObject();
 }
 
 applicationSchema.methods.toJSON = applicationToJSON;
