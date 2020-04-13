@@ -11,7 +11,7 @@ const outputDirectory = 'dist';
 console.log(`Webpack Mode === ${process.env.NODE_ENV}\n`);
 
 module.exports = {
-  mode: process.env.NODE_ENV,
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   // Enable sourcemaps for debugging webpack's output.
   devtool: 'source-map',
   entry: ['./src/client/index.tsx'],
