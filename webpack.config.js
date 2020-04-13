@@ -7,11 +7,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const outputDirectory = 'dist';
+const webpackMode =
+  process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
-console.log(`Webpack Mode === ${process.env.NODE_ENV}\n`);
+console.log(`Webpack Mode === ${webpackMode}\n`);
 
 module.exports = {
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+  mode: webpackMode,
   // Enable sourcemaps for debugging webpack's output.
   devtool: 'source-map',
   entry: ['./src/client/index.tsx'],
