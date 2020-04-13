@@ -47,7 +47,7 @@ const App = () => {
             }
           })
           .catch((e) => console.error(e));
-      }, 10000);
+      }, 2000);
     }
   }, [processId]);
 

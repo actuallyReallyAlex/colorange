@@ -3,6 +3,8 @@ import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import path from 'path';
+import ttyStream from 'tty';
+
 import { Controller } from './types';
 
 class App {
@@ -14,8 +16,19 @@ class App {
     this.app = express();
     this.port = port;
 
+    App.initializeStream();
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
+  }
+
+  static initializeStream(): void {
+    if (!process.stderr.isTTY) {
+      const tty = ttyStream.WriteStream.prototype;
+      Object.keys(tty).forEach((key) => {
+        process.stderr[key] = tty[key];
+      });
+      process.stderr.columns = 80;
+    }
   }
 
   private initializeMiddlewares(): void {

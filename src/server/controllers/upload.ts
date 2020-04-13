@@ -1,10 +1,10 @@
-import express, { Router, Request } from 'express';
+import express, { Router } from 'express';
 import multer from 'multer';
 import Papa from 'papaparse';
 import { v4 as uuidv4 } from 'uuid';
 
 import colorange from '../colorange';
-import { AppProcess, PapaResults, UploadFile } from '../types';
+import { AppProcess, UploadFile } from '../types';
 
 class UploadController {
   public router: Router = express.Router();
@@ -15,7 +15,7 @@ class UploadController {
     limits: {
       fileSize: 1000000,
     },
-    fileFilter: (req: Request, file: UploadFile, cb: Function) => {
+    fileFilter: (req: express.Request, file: UploadFile, cb: Function) => {
       if (!file.originalname.match(/\.(csv)$/)) {
         return cb(new Error('File must be a .csv file.'));
       }
@@ -24,7 +24,7 @@ class UploadController {
     },
   });
 
-  constructor(currentProcesses) {
+  constructor(currentProcesses: AppProcess[]) {
     this.currentProcesses = currentProcesses;
     this.initializeRoutes();
   }
@@ -40,20 +40,15 @@ class UploadController {
           const data = req.file.buffer.toString('utf8');
 
           const parsedData = Papa.parse(data, {
-            complete: (results: PapaResults) => {
+            complete: (results: Papa.ParseResult) => {
               console.log(
                 `${req.file.originalname} contains ${
                   results.data.length - 3
                 } entries`,
               );
             },
-            error: (err, file, inputElem, reason) => {
-              console.log({
-                err,
-                file,
-                inputElem,
-                reason,
-              });
+            error: (err: Papa.ParseError) => {
+              console.error(err);
               res.status(500).send();
             },
           });
