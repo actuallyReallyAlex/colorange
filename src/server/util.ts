@@ -1,7 +1,18 @@
 import store from 'app-store-scraper';
 import sharp, { OutputInfo } from 'sharp';
+import fetch from 'node-fetch';
+import Vibrant from 'node-vibrant';
+import { Document } from 'mongoose';
 
-import { AppData, AppStoreScraperApp, HSLColors, RGBColors } from './types';
+import Application from './models/application';
+
+import {
+  AppData,
+  App,
+  AppStoreScraperApp,
+  HSLColors,
+  RGBColors,
+} from './types';
 
 export const saveImage = async (
   buffer: Buffer,
@@ -102,3 +113,93 @@ export const hsl2rgb = (colors: HSLColors): RGBColors => {
 
 export const sortByHue = (apps: AppData[]): AppData[] =>
   apps.sort((a: AppData, b: AppData) => a.colors[0] - b.colors[0]);
+
+/**
+ * Returns an application instance using the MongoDB database.
+ * @param app Application.
+ */
+export const createApplicationInstance = async (
+  app: App,
+  bar: ProgressBar,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  group: any[],
+): Promise<AppData | Document> => {
+  try {
+    const dbApp = await Application.findOne({ name: app.name });
+
+    if (dbApp) {
+      bar.tick();
+      group.push(dbApp);
+      return dbApp;
+    }
+
+    const application = {
+      icon: {
+        base64: null,
+        url: await getArtworkUrl(app.name),
+      },
+      luminosity: null,
+      name: app.name,
+    };
+
+    const response = await fetch(application.icon.url);
+    const buffer = await response.buffer();
+    application.icon.base64 = buffer.toString('base64');
+
+    const v = new Vibrant(buffer);
+    const palette = await v.getPalette();
+    const vibColorVib = palette.Vibrant.getRgb();
+    const hsl = rgb2Hsl(vibColorVib);
+
+    // * New sort by Luminosity
+    const repetitions = 8;
+    let lum = Math.sqrt(
+      0.241 * vibColorVib[0] + 0.691 * vibColorVib[1] + 0.068 * vibColorVib[2],
+    );
+
+    const h2 = Number(hsl[0] * repetitions);
+    // const lum2 = Number(lum * repetitions);
+    let v2 = Number(hsl[2] * repetitions);
+
+    if (h2 % 2 === 1) {
+      v2 = repetitions - v2;
+      lum = repetitions - lum;
+    }
+
+    application.luminosity = { h2, lum, v2 };
+
+    const newApp = new Application({
+      icon: application.icon,
+      luminosity: application.luminosity,
+      name: application.name,
+    });
+    await newApp.save();
+    bar.tick();
+    group.push(application);
+    return application;
+  } catch (e) {
+    bar.terminate();
+    throw new Error(e);
+  }
+};
+
+export const sortByLuminosity = (applicationData: AppData[]): AppData[] =>
+  [...applicationData].sort((a, b) => {
+    if (!a.luminosity) {
+      throw new Error(`Issue - ${JSON.stringify(a, null, 2)}`);
+    }
+    if (!b.luminosity) {
+      throw new Error(`Issue - ${JSON.stringify(b, null, 2)}`);
+    }
+    let sortBy = 'h2';
+    if (a.luminosity.h2 === b.luminosity.h2) {
+      sortBy = 'lum';
+    }
+    if (
+      a.luminosity.h2 === b.luminosity.h2 &&
+      a.luminosity.lum === b.luminosity.lum
+    ) {
+      sortBy = 'v2';
+    }
+    return a.luminosity[sortBy] - b.luminosity[sortBy];
+  });

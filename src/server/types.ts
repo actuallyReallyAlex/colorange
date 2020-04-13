@@ -6,8 +6,6 @@ export type RGBColors = number[];
 
 export type App = { dbApp?: object; name: string };
 
-export type PapaResults = { data: string[] };
-
 export type Controller = {
   router: express.Router;
 };

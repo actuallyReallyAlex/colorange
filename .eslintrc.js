@@ -34,6 +34,7 @@ module.exports = {
     },
   },
   rules: {
+    'function-paren-newline': 0,
     'implicit-arrow-linebreak': 0,
     'import/extensions': [
       'error',
