@@ -1,13 +1,10 @@
-/* eslint-disable import/extensions */
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 import express, { Router, Request } from 'express';
 import multer from 'multer';
 import Papa from 'papaparse';
 import { v4 as uuidv4 } from 'uuid';
 
 import colorange from '../colorange';
-import { AppProcess } from '../types';
+import { AppProcess, PapaResults, UploadFile } from '../types';
 
 class UploadController {
   public router: Router = express.Router();
@@ -18,7 +15,7 @@ class UploadController {
     limits: {
       fileSize: 1000000,
     },
-    fileFilter: (req: Request, file: any, cb: Function) => {
+    fileFilter: (req: Request, file: UploadFile, cb: Function) => {
       if (!file.originalname.match(/\.(csv)$/)) {
         return cb(new Error('File must be a .csv file.'));
       }
@@ -32,18 +29,18 @@ class UploadController {
     this.initializeRoutes();
   }
 
-  public initializeRoutes() {
+  public initializeRoutes(): void {
     this.router.post(
       '/upload',
       this.upload.single('file'),
-      async (req: any, res: any) => {
+      async (req: express.Request, res: express.Response) => {
         try {
           console.log(`Received file: ${req.file.originalname}`);
 
           const data = req.file.buffer.toString('utf8');
 
           const parsedData = Papa.parse(data, {
-            complete: (results: any) => {
+            complete: (results: PapaResults) => {
               console.log(
                 `${req.file.originalname} contains ${
                   results.data.length - 3

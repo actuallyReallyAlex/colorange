@@ -1,6 +1,3 @@
-/* eslint-disable import/extensions */
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 import express, { Router, Request, Response } from 'express';
 import { promises } from 'fs';
 import path from 'path';
@@ -17,7 +14,7 @@ class StatusController {
     this.initializeRoutes();
   }
 
-  public initializeRoutes() {
+  public initializeRoutes(): void {
     this.router.get('/status', async (req: Request, res: Response) => {
       const { id } = req.query;
       const currentProcess = this.currentProcesses.find(

@@ -1,7 +1,3 @@
-/* eslint-disable object-curly-newline */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/extensions */
 import store from 'app-store-scraper';
 import sharp, { OutputInfo } from 'sharp';
 
@@ -104,5 +100,5 @@ export const hsl2rgb = (colors: HSLColors): RGBColors => {
   return [r, g, b];
 };
 
-export const sortByHue = (apps: any[]): AppData[] =>
-  apps.sort((a: any, b: any) => a.colors[0] - b.colors[0]);
+export const sortByHue = (apps: AppData[]): AppData[] =>
+  apps.sort((a: AppData, b: AppData) => a.colors[0] - b.colors[0]);

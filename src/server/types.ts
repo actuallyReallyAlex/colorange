@@ -1,8 +1,20 @@
+import express from 'express';
+
 export type HSLColors = number[];
 
 export type RGBColors = number[];
 
-export type App = { name: string };
+export type App = { dbApp?: object; name: string };
+
+export type PapaResults = { data: string[] };
+
+export type Controller = {
+  router: express.Router;
+};
+
+export type UploadFile = {
+  originalname: string;
+};
 
 interface IconData {
   base64?: string;
@@ -16,6 +28,7 @@ interface LuminosityData {
 }
 
 export interface AppData {
+  colors?: number[];
   icon: IconData;
   luminosity: LuminosityData;
   name: string;
