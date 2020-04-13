@@ -75,6 +75,7 @@ class App {
 
   public listen(): void {
     this.app.listen(this.port, () => {
+      console.log(`Mode: ${process.env.NODE_ENV}`);
       console.log(`Server is listening on port: ${this.port}`);
     });
   }
