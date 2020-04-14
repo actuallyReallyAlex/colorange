@@ -70,6 +70,7 @@ const App = (): JSX.Element => {
       />
       {sorted && (
         <div
+          id="application-container"
           style={{
             display: 'grid',
             height: '975.031px',
