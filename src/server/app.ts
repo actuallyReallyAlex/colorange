@@ -36,7 +36,6 @@ class App {
       console.log('1');
     } else {
       console.log('2');
-      console.log(process);
     }
     mongoose.connect(process.env.MONGODB_URL, {
       useNewUrlParser: true,
