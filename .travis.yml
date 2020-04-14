@@ -3,7 +3,7 @@ node_js:
   - node
 script:
   - npm run build
-  - npm run test
+  - npm run start
 env:
   global:
     - secure: QbgdzDsgXpQ9s4ztVAZOBba8HTNjgapWPmz9KT8kViDvrfHO+WQQIs/2BUhNS0XONKpod4ILOwi8ll/0QnmVrv/B1yNjUSVb0PrPXSpj9ULnKNBuAv/L7k+O7mrg/vPhqbvzN2NPzdSBSzGxn+KxIGniTRURPXIe+hX8BKKyKKNHgc5utHMcUb17iubufGfG2lGCiBBumjruStTk3ASp8fAVxhVdxwoH9lcc2SyKVmqy8Lj6US68cwrQyo/L9Mzcwzq7uzAJ/u9HY7h+UCLN8dMPj2af/h7r537OeLiVk95KdbOAe+L/LgUOEG8tfYi/qJ7H5Fw8/vq0oGfONblxQ346DSZqi7f9PKOCMqmHQuch22jRw/H2k+ikSAjzpCCKvKsJYKLcn1kdsmgfLi05aP95ciMcbbNtATrg9oEjAn3d2I29CcBa24jjt18hvCD592wWQP2q5OgiU9LyJmv2d6pGhKZuuLwWgsLBWhB01E6xz/wOqaB4CckfJMegVL+42q20iMRyN2QdqNHYH7P3qcLLnE8mnxAy/saKBEqjWE9ayzyk6CVNx128qAAvm1HbdzGXpxp8xXoGzbpdRLalEYPxOeI1JW7yBUXx81jgaSF63jTsyLkZISPiaVZZvqPffDmcAUYJ4rAMBE5StB3TZKUuAKgCxzD7b2ok+mKYGzc=
