@@ -32,11 +32,6 @@ class App {
   }
 
   private initializeMiddlewares(): void {
-    if (process.env.MONGODB_URL) {
-      console.log('1');
-    } else {
-      console.log('2');
-    }
     mongoose.connect(process.env.MONGODB_URL, {
       useNewUrlParser: true,
       useCreateIndex: true,
