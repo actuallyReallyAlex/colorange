@@ -17,9 +17,10 @@
     "format": "prettier --write .",
     "lint": "eslint \"src/**/*.ts\"",
     "start": "node --no-warnings build/index.js",
-    "test": "start-server-and-test test-server http://localhost:3000 cy:run:record",
+    "test": "start-server-and-test test-server-CI http://localhost:3000 cy:run:record",
     "test-local": "start-server-and-test test-server http://localhost:3000 cy:run",
-    "test-server": "env-cmd -e test npm start"
+    "test-server": "env-cmd -e test npm start",
+    "test-server-CI": "npm start"
   },
   "repository": {
     "type": "git",
