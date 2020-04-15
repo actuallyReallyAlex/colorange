@@ -72,6 +72,7 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "@sentry/node": "^5.15.4",
     "app-store-scraper": "^0.16.2",
     "chalk": "^3.0.0",
     "colorthief": "^2.3.0",

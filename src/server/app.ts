@@ -1,8 +1,10 @@
+import chalk from 'chalk';
 import cors from 'cors';
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import path from 'path';
+import * as Sentry from '@sentry/node';
 import ttyStream from 'tty';
 
 import { Controller } from './types';
@@ -19,6 +21,11 @@ class App {
     App.initializeStream();
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
+    this.initializeErrorHandler();
+  }
+
+  private initializeErrorHandler(): void {
+    this.app.use(Sentry.Handlers.errorHandler());
   }
 
   static initializeStream(): void {
@@ -32,6 +39,7 @@ class App {
   }
 
   private initializeMiddlewares(): void {
+    this.app.use(Sentry.Handlers.requestHandler());
     mongoose.connect(process.env.MONGODB_URL, {
       useNewUrlParser: true,
       useCreateIndex: true,
@@ -52,7 +60,7 @@ class App {
         if (whitelistDomains.indexOf(origin) !== -1) {
           cb(null, true);
         } else {
-          console.log(`Colorange Sever refused to allow: ${origin}`);
+          console.error(`Colorange Sever refused to allow: ${origin}`);
           cb(new Error('Not allowed by CORS'));
         }
       },
@@ -75,8 +83,10 @@ class App {
 
   public listen(): void {
     this.app.listen(this.port, () => {
-      console.log(`Mode: ${process.env.NODE_ENV}`);
-      console.log(`Server is listening on port: ${this.port}`);
+      console.log(`Mode: ${chalk.yellowBright(process.env.NODE_ENV)}\n`);
+      console.log(
+        `Server is listening on port: ${chalk.yellowBright(this.port)}\n`,
+      );
     });
   }
 }
