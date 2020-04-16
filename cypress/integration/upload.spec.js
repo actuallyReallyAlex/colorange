@@ -24,7 +24,7 @@ context('Upload', () => {
         });
       });
 
-    cy.get('button[type=button]').click({ force: true });
+    cy.get('#upload-button').click({ force: true });
 
     cy.get('body').should('contain.text', 'LOADING');
 

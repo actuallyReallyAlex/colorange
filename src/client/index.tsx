@@ -71,9 +71,10 @@ const App = (): JSX.Element => {
       <label htmlFor="file">
         <Button
           disabled={processId !== ''}
-          variant="contained"
           color="primary"
           component="span"
+          id="upload-button"
+          variant="contained"
         >
           Upload
         </Button>
