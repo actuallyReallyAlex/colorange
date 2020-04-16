@@ -14,6 +14,12 @@ console.log(`Webpack Mode === ${webpackMode}\n`);
 
 module.exports = {
   mode: webpackMode,
+  devServer: {
+    contentBase: path.join(__dirname, 'public'),
+    proxy: {
+      '/scripts': 'http://localhost:3000',
+    },
+  },
   // Enable sourcemaps for debugging webpack's output.
   devtool: 'source-map',
   entry: ['./src/client/index.tsx'],
