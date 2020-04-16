@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/node';
 import App from './app';
+import AssetsController from './controllers/assets';
 import ScriptsController from './controllers/scripts';
 import StatusController from './controllers/status';
 import UploadController from './controllers/upload';
@@ -15,6 +16,7 @@ const currentProcesses: AppProcess[] = [];
 
 const app = new App(
   [
+    new AssetsController(),
     new ScriptsController(),
     new StatusController(currentProcesses),
     new UploadController(currentProcesses),

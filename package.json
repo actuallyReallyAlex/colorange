@@ -9,7 +9,7 @@
   "scripts": {
     "build": "npm run build-client && npm run build-server",
     "build-client": "rimraf dist && webpack",
-    "build-server": "rimraf build && npm run format && npm run lint && tsc",
+    "build-server": "rimraf build && npm run format && npm run lint && tsc && copyfiles -f src/server/assets/**/* build/assets",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cy:run:record": "cypress run --record",
@@ -53,6 +53,7 @@
     "@typescript-eslint/parser": "^2.26.0",
     "babel-polyfill": "^6.26.0",
     "clean-webpack-plugin": "^3.0.0",
+    "copyfiles": "^2.2.0",
     "css-loader": "^3.4.2",
     "cypress": "^4.4.0",
     "cypress-file-upload": "^4.0.6",
@@ -95,6 +96,7 @@
     "progress": "^2.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-helmet": "^6.0.0",
     "sharp": "^0.25.2",
     "uuid": "^7.0.3"
   }
