@@ -55,7 +55,7 @@ const App = (): JSX.Element => {
 
       {processId && <Typography variant="body1">LOADING</Typography>}
 
-      <Phone sorted={sorted} />
+      <Phone processId={processId} sorted={sorted} />
     </Box>
   );
 };
