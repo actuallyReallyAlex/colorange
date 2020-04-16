@@ -22,8 +22,7 @@ module.exports = {
     filename: 'bundle.js',
   },
   resolve: {
-    // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ['.ts', '.tsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   plugins: [
     new CleanWebpackPlugin(),
