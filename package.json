@@ -17,6 +17,7 @@
     "format": "prettier --write .",
     "lint": "eslint \"src/**/*.ts\"",
     "start": "node --no-warnings build/index.js",
+    "start:dev": "start-server-and-test dev http://localhost:3000 webpack-dev-server",
     "test": "start-server-and-test test-server-CI http://localhost:3000 cy:run:record",
     "test-local": "start-server-and-test test-server http://localhost:3000 cy:run",
     "test-server": "env-cmd -e test npm start",
@@ -69,7 +70,8 @@
     "typescript": "^3.8.3",
     "url-loader": "^4.0.0",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.10",
