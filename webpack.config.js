@@ -40,7 +40,7 @@ module.exports = {
     rules: [
       {
         test: /\.svg$/,
-        loader: 'svg-inline-loader',
+        use: ['@svgr/webpack'],
       },
       {
         test: /\.ts(x?)$/,

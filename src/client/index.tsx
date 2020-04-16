@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import * as Sentry from '@sentry/browser';
 import { Box, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import SVG from 'react-inlinesvg';
 import iPhoneImage from './assets/iphone.png';
 import ColorangeIcon from './assets/colorange.svg';
 
@@ -67,13 +66,7 @@ const App = (): JSX.Element => {
 
   return (
     <Box>
-      <SVG
-        description="colorange"
-        onError={(thingError) => console.log({ thingError })}
-        onLoad={(thingLoad) => console.log({ thingLoad })}
-        src={ColorangeIcon}
-      />
-      {/* <img alt="colorange" src={ColorangeIcon} /> */}
+      <ColorangeIcon />
       <Typography variant="h1">colorange</Typography>
       <input
         accept=".csv"
