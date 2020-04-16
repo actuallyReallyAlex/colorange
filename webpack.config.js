@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const webpack = require('webpack');
+const chalk = require('chalk');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -10,14 +11,14 @@ const outputDirectory = 'dist';
 const webpackMode =
   process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
-console.log(`Webpack Mode === ${webpackMode}\n`);
+console.log(`Webpack Mode === ${chalk.yellowBright(webpackMode)}\n`);
 
 module.exports = {
   mode: webpackMode,
   devServer: {
     contentBase: path.join(__dirname, 'public'),
     proxy: {
-      '/scripts': 'http://localhost:3000',
+      '*': 'http://localhost:3000',
     },
   },
   // Enable sourcemaps for debugging webpack's output.
@@ -39,6 +40,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
+      },
+      {
         test: /\.ts(x?)$/,
         exclude: /node_modules/,
         use: [
@@ -52,7 +57,7 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        test: /\.(png|woff|woff2|eot|ttf)$/,
         loader: 'url-loader?limit=100000',
       },
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.

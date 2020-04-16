@@ -35,6 +35,7 @@
   "homepage": "https://github.com/alexlee-dev/app-color-organizer#readme",
   "devDependencies": {
     "@rckeller/cypress-unfetch": "^1.0.1",
+    "@svgr/webpack": "^5.3.1",
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.3",
     "@types/mongoose": "^5.7.8",
