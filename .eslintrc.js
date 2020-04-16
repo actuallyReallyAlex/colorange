@@ -36,17 +36,8 @@ module.exports = {
   rules: {
     'function-paren-newline': 0,
     'implicit-arrow-linebreak': 0,
-    'import/extensions': [
-      'error',
-      'ignorePackages',
-      {
-        js: 'never',
-        mjs: 'never',
-        jsx: 'never',
-        ts: 'never',
-        tsx: 'never',
-      },
-    ],
+    'import/extensions': 0,
+    'import/no-unresolved': 0,
     'no-await-in-loop': 1,
     'no-console': 0,
     'no-param-reassign': 1,
