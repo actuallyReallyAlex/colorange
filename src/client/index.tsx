@@ -13,8 +13,19 @@ Sentry.init({
 });
 
 const useStyles = makeStyles(() => ({
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  header: {
+    alignItems: 'center',
+    display: 'flex',
+  },
   input: {
     display: 'none',
+  },
+  title: {
+    marginLeft: '25px',
   },
 }));
 
@@ -66,27 +77,34 @@ const App = (): JSX.Element => {
 
   return (
     <Box>
-      <ColorangeIcon />
-      <Typography variant="h1">colorange</Typography>
-      <input
-        accept=".csv"
-        className={classes.input}
-        disabled={processId !== ''}
-        id="file"
-        onChange={handleInputChange}
-        type="file"
-      />
-      <label htmlFor="file">
-        <Button
+      <Box className={classes.header}>
+        <ColorangeIcon height="100px" width="100px" />
+        <Typography className={classes.title} variant="h1">
+          colorange
+        </Typography>
+      </Box>
+      <Box className={classes.buttonContainer}>
+        <input
+          accept=".csv"
+          className={classes.input}
           disabled={processId !== ''}
-          color="primary"
-          component="span"
-          id="upload-button"
-          variant="contained"
-        >
-          Upload
-        </Button>
-      </label>
+          id="file"
+          onChange={handleInputChange}
+          type="file"
+        />
+        <label htmlFor="file">
+          <Button
+            disabled={processId !== ''}
+            color="primary"
+            component="span"
+            id="upload-button"
+            variant="contained"
+          >
+            Upload
+          </Button>
+        </label>
+      </Box>
+
       {processId && <Typography variant="body1">LOADING</Typography>}
       <img
         alt="iPhone"
