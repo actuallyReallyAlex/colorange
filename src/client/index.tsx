@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import iPhoneImage from './assets/iphone.png';
 import ColorangeIcon from './assets/colorange.svg';
 
+import './index.css';
+
 Sentry.init({
   dsn:
     'https://ffed4c5192a74b1691116f224bb787ef@o202486.ingest.sentry.io/5202072',
