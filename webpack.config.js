@@ -39,6 +39,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader',
+      },
+      {
         test: /\.ts(x?)$/,
         exclude: /node_modules/,
         use: [
@@ -52,7 +56,7 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        test: /\.(png|woff|woff2|eot|ttf)$/,
         loader: 'url-loader?limit=100000',
       },
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
