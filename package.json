@@ -76,6 +76,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.10",
     "@material-ui/icons": "^4.9.1",
+    "@sentry/browser": "^5.15.4",
     "@sentry/node": "^5.15.4",
     "app-store-scraper": "^0.16.2",
     "chalk": "^3.0.0",

@@ -1,9 +1,15 @@
 /* global document, fetch, FormData */
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import * as Sentry from '@sentry/browser';
 import { Box, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import iPhoneImage from './assets/iphone.png';
+
+Sentry.init({
+  dsn:
+    'https://ffed4c5192a74b1691116f224bb787ef@o202486.ingest.sentry.io/5202072',
+});
 
 const useStyles = makeStyles(() => ({
   input: {
