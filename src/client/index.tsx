@@ -1,21 +1,28 @@
 /* global document, fetch, FormData */
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { Box, Button, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import iPhoneImage from './assets/iphone.png';
 
+const useStyles = makeStyles(() => ({
+  input: {
+    display: 'none',
+  },
+}));
+
 const App = (): JSX.Element => {
-  const [file, setFile] = useState(null);
+  const classes = useStyles();
+
   const [sorted, setSorted] = useState(null);
   const [processId, setProcessId] = useState('');
 
   const handleInputChange = (e: { target: HTMLInputElement }): void => {
-    const { files } = e.target;
-    setFile(files[0]);
-  };
-
-  const handleUpload = (): void => {
+    if (!e.target.files[0]) {
+      return;
+    }
     const data = new FormData();
-    data.append('file', file);
+    data.append('file', e.target.files[0]);
 
     fetch('/upload', { method: 'POST', body: data })
       .then((response) => {
@@ -23,10 +30,10 @@ const App = (): JSX.Element => {
           response
             .json()
             .then((res) => setProcessId(res.processId))
-            .catch((e) => console.error(e));
+            .catch((fetchError) => console.error(fetchError));
         }
       })
-      .catch((e) => console.error(e));
+      .catch((error) => console.error(error));
   };
 
   useEffect(() => {
@@ -51,14 +58,27 @@ const App = (): JSX.Element => {
   }, [processId]);
 
   return (
-    <div>
-      <h1>colorange</h1>
-      <label htmlFor="file">File</label>
-      <input id="file" name="file" onChange={handleInputChange} type="file" />
-      <button onClick={handleUpload} type="button">
-        UPLOAD
-      </button>
-      {processId && <span>LOADING</span>}
+    <Box>
+      <Typography variant="h1">colorange</Typography>
+      <input
+        accept=".csv"
+        className={classes.input}
+        disabled={processId !== ''}
+        id="file"
+        onChange={handleInputChange}
+        type="file"
+      />
+      <label htmlFor="file">
+        <Button
+          disabled={processId !== ''}
+          variant="contained"
+          color="primary"
+          component="span"
+        >
+          Upload
+        </Button>
+      </label>
+      {processId && <Typography variant="body1">LOADING</Typography>}
       <img
         alt="iPhone"
         src={iPhoneImage}
@@ -111,7 +131,7 @@ const App = (): JSX.Element => {
           ))}
         </div>
       )}
-    </div>
+    </Box>
   );
 };
 
