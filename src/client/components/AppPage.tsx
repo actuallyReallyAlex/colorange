@@ -34,6 +34,7 @@ const AppPage = ({ appSet }) => {
       {appSet.map(({ icon, name }, i) => (
         <Box className={classes.app} key={i}>
           <img
+            alt={name}
             className={classes.appImage}
             src={`data:image/jpeg;base64,${icon.base64}`}
           />
