@@ -1,8 +1,13 @@
 import * as React from 'react';
-import { Box, Paper, Typography } from '@material-ui/core';
+import { Box, Button, Paper, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableViews from 'react-swipeable-views';
 import AppPage from './AppPage';
+
+// import { makeStyles, useTheme } from '@material-ui/core/styles';
+import MobileStepper from '@material-ui/core/MobileStepper';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -29,15 +34,13 @@ const Phone = ({ processId, sorted }) => {
       return;
     }
 
-    setApps([...sorted].slice(0, 24));
-    setPages([
-      [...sorted].slice(0, 24),
-      [...sorted].slice(24, 48),
-      [...sorted].slice(48, 62),
-    ]);
+    let newPages = [];
+    while (sorted.length) {
+      newPages.push(sorted.splice(0, 24));
+    }
+    setPages(newPages);
+    setApps(newPages[0]);
   }, [sorted]);
-
-  console.log({ pages });
 
   return (
     <Box className={classes.container}>
@@ -51,12 +54,38 @@ const Phone = ({ processId, sorted }) => {
           <SwipeableViews
             containerStyle={{ height: '510px' }} // ? How do I fix this. Don't want any scrolling, but shouldn't have to set it like this
             enableMouseEvents
-            index={0}
+            index={page}
           >
             {pages.map((appSet, i) => (
               <AppPage appSet={appSet} key={i} />
             ))}
           </SwipeableViews>
+          <MobileStepper
+            steps={pages.length}
+            position="static"
+            variant="text"
+            activeStep={page}
+            nextButton={
+              <Button
+                size="small"
+                onClick={() => setPage(page + 1)}
+                disabled={page === pages.length - 1}
+              >
+                Next
+                <KeyboardArrowRight />
+              </Button>
+            }
+            backButton={
+              <Button
+                size="small"
+                onClick={() => setPage(page - 1)}
+                disabled={page === 0}
+              >
+                <KeyboardArrowLeft />
+                Back
+              </Button>
+            }
+          />
         </Paper>
       )}
     </Box>
