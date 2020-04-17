@@ -50,7 +50,11 @@ const Phone = ({ processId, sorted }) => {
         </Typography>
       )}
       {sorted && (
-        <Paper className={classes.paper} elevation={5}>
+        <Paper
+          className={classes.paper}
+          elevation={5}
+          id="application-container"
+        >
           <SwipeableViews
             containerStyle={{ height: '510px' }} // ? How do I fix this. Don't want any scrolling, but shouldn't have to set it like this
             enableMouseEvents
