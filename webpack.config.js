@@ -41,9 +41,14 @@ module.exports = {
   ],
   module: {
     rules: [
+      // {
+      //   test: /\.svg$/,
+      //   use: ['@svgr/webpack'],
+
+      // },
       {
         test: /\.svg$/,
-        use: ['@svgr/webpack'],
+        use: ['@svgr/webpack', 'url-loader'],
       },
       {
         test: /\.ts(x?)$/,

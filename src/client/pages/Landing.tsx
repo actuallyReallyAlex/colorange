@@ -17,9 +17,7 @@ const useStyles = makeStyles(() => ({
   heroImage: {
     height: '500px',
     position: 'absolute',
-    right: '0',
-    top: '0',
-    width: '100vw',
+    right: '100px',
     zIndex: 1,
   },
   heroImageContainer: {
@@ -51,7 +49,7 @@ const Hero = () => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.heroContainer}>
+    <Box className={classes.heroContainer} id="hero-container">
       <Box className={classes.heroInnerContainer}>
         <Box className={classes.heroTypographyContainer}>
           <Typography className={classes.heroHeading} variant="h1">
@@ -61,7 +59,7 @@ const Hero = () => {
             Colorange will make it better.
           </Typography>
         </Box>
-        <HeroImage className={classes.heroImage} viewBox="-350 -150 1 1000" />
+        <img className={classes.heroImage} src={HeroImage} />
       </Box>
     </Box>
   );
