@@ -8,7 +8,12 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     display: 'flex',
   },
+  icon: {
+    height: '50px',
+    width: '50px',
+  },
   title: {
+    fontSize: '1.5rem',
     marginLeft: '25px',
   },
 }));
@@ -18,8 +23,8 @@ const Header = () => {
 
   return (
     <Box className={classes.header}>
-      <ColorangeIcon height="100px" width="100px" />
-      <Typography className={classes.title} variant="h1">
+      <img alt="colorange" className={classes.icon} src={ColorangeIcon} />
+      <Typography className={classes.title} variant="h2">
         colorange
       </Typography>
     </Box>
