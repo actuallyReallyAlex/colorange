@@ -6,7 +6,7 @@
 
 /// <reference types="cypress" />
 
-context('Upload', () => {
+context('Application Page', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/app');
   });
