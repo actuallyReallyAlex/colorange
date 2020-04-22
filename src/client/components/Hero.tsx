@@ -67,7 +67,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <Box className={classes.heroContainer} id="hero-container">
+    <Box className={`main ${classes.heroContainer}`} id="hero-container">
       <Box className={classes.heroInnerContainer} id="hero-inner-container">
         <Box className={classes.heroTypographyContainer}>
           <Typography className={classes.heroHeading} variant="h1">
@@ -86,11 +86,11 @@ const Hero = () => {
           id="hero-image"
           src={HeroImage}
         />
-        <Button color="default" variant="contained">
-          <Link className={classes.cta} id="cta" to="/app">
+        <Link className={classes.cta} id="cta" to="/app">
+          <Button color="default" variant="contained">
             Start
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </Box>
     </Box>
   );
