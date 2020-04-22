@@ -1,10 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import Header from '../components/Header';
 import Upload from '../components/Upload';
 import Phone from '../components/Phone';
+import Nav from '../components/Nav';
+
+const useStyles = makeStyles(() => ({
+  innerContainer: {
+    color: 'white',
+    margin: '0 auto',
+    maxWidth: '1200px',
+    width: '100%',
+  },
+  outerContainer: {
+    backgroundColor: '#0b0033',
+    display: 'flex',
+    height: '100vh',
+    width: '100vw',
+  },
+}));
 
 const Application = (): JSX.Element => {
+  const classes = useStyles();
   const [sorted, setSorted] = useState(null);
   const [processId, setProcessId] = useState('');
 
@@ -49,13 +67,15 @@ const Application = (): JSX.Element => {
   }, [processId]);
 
   return (
-    <Box id="app-container">
-      <Header />
-      <Upload handleInputChange={handleInputChange} processId={processId} />
+    <Box className={classes.outerContainer} id="app-container">
+      <Box className={classes.innerContainer}>
+        <Nav />
+        <Upload handleInputChange={handleInputChange} processId={processId} />
 
-      {processId && <Typography variant="body1">LOADING</Typography>}
+        {processId && <Typography variant="body1">LOADING</Typography>}
 
-      <Phone processId={processId} sorted={sorted} />
+        <Phone processId={processId} sorted={sorted} />
+      </Box>
     </Box>
   );
 };
