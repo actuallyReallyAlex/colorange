@@ -1,9 +1,15 @@
 import * as React from 'react';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography, Button } from '@material-ui/core';
 import HeroImage from '../assets/hero.svg';
 import { makeStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
+  cta: {
+    color: 'rgba(0, 0, 0, 0.87)',
+    fontSize: '1.2rem',
+    textDecoration: 'none',
+  },
   heroContainer: {
     backgroundColor: '#0b0033',
     display: 'flex',
@@ -17,7 +23,6 @@ const useStyles = makeStyles(() => ({
     height: '500px',
     position: 'absolute',
     right: '0',
-    zIndex: 1,
   },
   heroImageContainer: {
     color: 'white',
@@ -32,12 +37,10 @@ const useStyles = makeStyles(() => ({
     width: '1200px',
   },
   heroTypographyContainer: {
-    background: 'rgba(0, 0, 0, 0.5)',
-    borderRadius: '50px',
     color: 'white',
     padding: '25px',
     width: '67%',
-    zIndex: 2,
+    zIndex: 1,
   },
   heroSubheading: {
     color: 'rgba(255,255,255,.5)',
@@ -78,6 +81,11 @@ const Hero = () => {
           </Typography>
         </Box>
         <img className={classes.heroImage} id="hero-image" src={HeroImage} />
+        <Button color="default" variant="contained">
+          <Link className={classes.cta} to="/app">
+            Start
+          </Link>
+        </Button>
       </Box>
     </Box>
   );

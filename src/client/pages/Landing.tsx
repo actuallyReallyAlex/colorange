@@ -16,7 +16,6 @@ const Landing = () => {
     <Box className={classes.landingContainer}>
       <Nav />
       <Hero />
-      <Link to="/app">App</Link>
     </Box>
   );
 };

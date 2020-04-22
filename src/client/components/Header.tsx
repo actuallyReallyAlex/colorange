@@ -1,12 +1,15 @@
 import * as React from 'react';
-import { Box, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 import ColorangeIcon from '../assets/colorange.svg';
 
 const useStyles = makeStyles(() => ({
   header: {
     alignItems: 'center',
+    color: 'white',
     display: 'flex',
+    textDecoration: 'none',
   },
   icon: {
     height: '50px',
@@ -22,12 +25,12 @@ const Header = () => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.header}>
+    <Link className={classes.header} to="/">
       <img alt="colorange" className={classes.icon} src={ColorangeIcon} />
       <Typography className={classes.title} variant="h2">
         colorange
       </Typography>
-    </Box>
+    </Link>
   );
 };
 
