@@ -47,11 +47,11 @@ const Nav: React.SFC<Props> = ({ simple }) => {
             </Link>
           )}
         </Box>
-        {!simple && (
+        {/* {!simple && (
           <Link className={classes.link} to="/login">
             <Typography>Log In</Typography>
           </Link>
-        )}
+        )} */}
       </Box>
     </Box>
   );
