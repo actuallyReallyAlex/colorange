@@ -61,6 +61,7 @@ const NotFound = ({ history }) => {
           </Typography>
           <Button
             color="primary"
+            id="back"
             onClick={() => history.goBack()}
             variant="contained"
           >
