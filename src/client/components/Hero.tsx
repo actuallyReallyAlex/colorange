@@ -67,7 +67,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <Box className={classes.heroContainer} id="hero-container">
+    <Box className={`main ${classes.heroContainer}`} id="hero-container">
       <Box className={classes.heroInnerContainer} id="hero-inner-container">
         <Box className={classes.heroTypographyContainer}>
           <Typography className={classes.heroHeading} variant="h1">
