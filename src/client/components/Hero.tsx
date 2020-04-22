@@ -80,7 +80,12 @@ const Hero = () => {
             Colorange will make it better.
           </Typography>
         </Box>
-        <img className={classes.heroImage} id="hero-image" src={HeroImage} />
+        <img
+          alt="People jumping for joy."
+          className={classes.heroImage}
+          id="hero-image"
+          src={HeroImage}
+        />
         <Button color="default" variant="contained">
           <Link className={classes.cta} to="/app">
             Start
