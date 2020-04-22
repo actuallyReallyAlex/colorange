@@ -17,6 +17,7 @@ module.exports = {
   mode: webpackMode,
   devServer: {
     contentBase: path.join(__dirname, 'public'),
+    historyApiFallback: true,
     proxy: {
       '*': 'http://localhost:3000',
     },
@@ -27,6 +28,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, outputDirectory),
     filename: 'bundle.js',
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -39,9 +41,14 @@ module.exports = {
   ],
   module: {
     rules: [
+      // {
+      //   test: /\.svg$/,
+      //   use: ['@svgr/webpack'],
+
+      // },
       {
         test: /\.svg$/,
-        use: ['@svgr/webpack'],
+        use: ['@svgr/webpack', 'url-loader'],
       },
       {
         test: /\.ts(x?)$/,

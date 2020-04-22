@@ -77,6 +77,10 @@ class App {
 
     this.app.use(express.static(path.join(__dirname, '../dist')));
 
+    this.app.get('/app', (req: Request, res: Response) => {
+      res.sendFile(path.join(__dirname, '../dist/index.html'));
+    });
+
     this.app.get('*', (req: Request, res: Response) => {
       if (req.hostname === 'localhost' && req.path === '/') {
         res.status(200).send();
