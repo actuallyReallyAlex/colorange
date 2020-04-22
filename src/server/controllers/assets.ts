@@ -10,6 +10,7 @@ class AssetsController {
     'apple-touch-icon.png',
     'favicon-16x16.png',
     'favicon-32x32.png',
+    'iphone.png',
     'safari-pinned-tab.svg',
     'site.webmanifest',
   ];

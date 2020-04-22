@@ -18,6 +18,12 @@ const useStyles = makeStyles(() => ({
     marginTop: '25px',
   },
   paper: {
+    // borderImage: 'url(assets/iphone.png) 240',
+    // borderStyle: 'solid',
+    // borderWidth: '70px',
+    borderStyle: 'solid',
+    borderWidth: '20px',
+    marginBottom: '50px',
     width: '375px',
   },
 }));
@@ -55,30 +61,13 @@ const Phone = ({ processId, sorted }) => {
           elevation={5}
           id="application-container"
         >
-          <SwipeableViews
-            containerStyle={{ height: '510px' }} // ? How do I fix this. Don't want any scrolling, but shouldn't have to set it like this
-            enableMouseEvents
-            index={page}
-          >
+          <SwipeableViews enableMouseEvents index={page}>
             {pages.map((appSet, i) => (
               <AppPage appSet={appSet} key={i} />
             ))}
           </SwipeableViews>
           <MobileStepper
-            steps={pages.length}
-            position="static"
-            variant="text"
             activeStep={page}
-            nextButton={
-              <Button
-                size="small"
-                onClick={() => setPage(page + 1)}
-                disabled={page === pages.length - 1}
-              >
-                Next
-                <KeyboardArrowRight />
-              </Button>
-            }
             backButton={
               <Button
                 size="small"
@@ -89,6 +78,19 @@ const Phone = ({ processId, sorted }) => {
                 Back
               </Button>
             }
+            nextButton={
+              <Button
+                size="small"
+                onClick={() => setPage(page + 1)}
+                disabled={page === pages.length - 1}
+              >
+                Next
+                <KeyboardArrowRight />
+              </Button>
+            }
+            position="static"
+            steps={pages.length}
+            variant="dots"
           />
         </Paper>
       )}

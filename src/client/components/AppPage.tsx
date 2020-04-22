@@ -1,28 +1,34 @@
 import * as React from 'react';
-import { Box } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
   app: {
-    alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
+    height: '80px',
+    width: '80px',
+  },
+  appImage: {
+    borderRadius: '12px',
     height: '60px',
+    margin: '0 auto',
     width: '60px',
   },
-  appImage: { borderRadius: '10%', height: '60px', width: '60px' },
   appName: {
-    fontSize: '12px',
+    overflow: 'auto',
     textAlign: 'center',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
   container: {
     display: 'grid',
-    gridGap: '26px',
-    gridTemplateColumns: '60px 60px 60px 60px',
-    gridTemplateRows: '60px 60px 60px 60px',
+    gridRowGap: '20px',
+    gridTemplateColumns: '80px 80px 80px 80px',
+    gridTemplateRows: '80px 80px 80px 80px',
+    marginBottom: '20px',
     marginLeft: '28.5px',
+    marginTop: '20px',
   },
 }));
 
@@ -38,7 +44,9 @@ const AppPage = ({ appSet }) => {
             className={classes.appImage}
             src={`data:image/jpeg;base64,${icon.base64}`}
           />
-          <span className={classes.appName}>{name}</span>
+          <Typography className={classes.appName} variant="caption">
+            {name}
+          </Typography>
         </Box>
       ))}
     </Box>
