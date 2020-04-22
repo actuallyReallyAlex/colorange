@@ -87,7 +87,7 @@ const Hero = () => {
           src={HeroImage}
         />
         <Button color="default" variant="contained">
-          <Link className={classes.cta} to="/app">
+          <Link className={classes.cta} id="cta" to="/app">
             Start
           </Link>
         </Button>

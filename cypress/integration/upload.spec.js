@@ -8,7 +8,7 @@
 
 context('Upload', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000');
+    cy.visit('http://localhost:3000/app');
   });
 
   it('Should handle uploading a correct csv file', () => {
