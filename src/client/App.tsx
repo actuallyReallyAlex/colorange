@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Landing from './pages/Landing';
 import Application from './pages/Application';
+import NotFound from './pages/NotFound';
 
 const App = () => {
   return (
@@ -13,6 +14,9 @@ const App = () => {
         </Route>
         <Route exact path="/app">
           <Application />
+        </Route>
+        <Route path="*">
+          <NotFound />
         </Route>
       </Switch>
     </Router>

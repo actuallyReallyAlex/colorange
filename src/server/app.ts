@@ -82,11 +82,8 @@ class App {
     });
 
     this.app.get('*', (req: Request, res: Response) => {
-      if (req.hostname === 'localhost' && req.path === '/') {
-        res.status(200).send();
-      } else {
-        res.status(404).send();
-      }
+      // * React Router will handle unknown paths
+      res.sendFile(path.join(__dirname, '../dist/index.html'));
     });
   }
 
