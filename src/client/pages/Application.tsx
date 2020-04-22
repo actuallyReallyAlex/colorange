@@ -9,15 +9,20 @@ import Nav from '../components/Nav';
 const useStyles = makeStyles(() => ({
   innerContainer: {
     color: 'white',
+    display: 'flex',
+    flexDirection: 'column',
     margin: '0 auto',
+    minHeight: '100vh',
     maxWidth: '1200px',
     width: '100%',
   },
   outerContainer: {
     backgroundColor: '#0b0033',
+  },
+  mainContainer: {
     display: 'flex',
-    height: '100vh',
-    width: '100vw',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
 }));
 
@@ -67,14 +72,16 @@ const Application = (): JSX.Element => {
   }, [processId]);
 
   return (
-    <Box className={classes.outerContainer} id="app-container">
+    <Box className={classes.outerContainer}>
       <Box className={classes.innerContainer}>
         <Nav />
-        <Upload handleInputChange={handleInputChange} processId={processId} />
+        <Box className={`main ${classes.mainContainer}`}>
+          <Upload handleInputChange={handleInputChange} processId={processId} />
 
-        {processId && <Typography variant="body1">LOADING</Typography>}
+          {processId && <Typography variant="body1">LOADING</Typography>}
 
-        <Phone processId={processId} sorted={sorted} />
+          <Phone processId={processId} sorted={sorted} />
+        </Box>
       </Box>
     </Box>
   );
