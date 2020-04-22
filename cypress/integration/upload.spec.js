@@ -6,7 +6,7 @@
 
 /// <reference types="cypress" />
 
-context('Upload', () => {
+context('Application Page', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/app');
   });
@@ -31,5 +31,10 @@ context('Upload', () => {
     cy.wait(10000);
 
     cy.get('#application-container').should('exist');
+  });
+
+  it('Should display full Nav', () => {
+    cy.get('#nav').should('contain.text', 'How It Works');
+    cy.get('#nav').should('contain.text', 'Log In');
   });
 });

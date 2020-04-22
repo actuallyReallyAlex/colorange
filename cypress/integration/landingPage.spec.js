@@ -6,7 +6,7 @@
 
 /// <reference types="cypress" />
 
-context('Upload', () => {
+context('Landing Page', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000');
   });
@@ -20,5 +20,10 @@ context('Upload', () => {
       'contain.text',
       'Upload a csv document to see the sorted applications',
     );
+  });
+
+  it('Should display full Nav', () => {
+    cy.get('#nav').should('contain.text', 'How It Works');
+    cy.get('#nav').should('contain.text', 'Log In');
   });
 });

@@ -6,7 +6,7 @@
 
 /// <reference types="cypress" />
 
-context('Upload', () => {
+context('404 Page', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000');
   });
@@ -30,5 +30,12 @@ context('Upload', () => {
     cy.get('#back').click();
 
     cy.get('body').should('contain.text', 'Your phone is unorganized.');
+  });
+
+  it('Should display simple Nav', () => {
+    cy.visit('http://localhost:3000/lol');
+
+    cy.get('#nav').should('not.contain.text', 'How It Works');
+    cy.get('#nav').should('not.contain.text', 'Log In');
   });
 });

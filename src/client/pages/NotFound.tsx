@@ -45,7 +45,7 @@ const NotFound = ({ history }) => {
   return (
     <Box className={classes.outerContainer}>
       <Box className={classes.innerContainer}>
-        <Nav />
+        <Nav simple />
         <Box className={classes.centerContainer}>
           <img
             alt="404 - Sorry, we can’t find the page you were looking for."

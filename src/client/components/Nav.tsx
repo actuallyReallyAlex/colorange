@@ -29,21 +29,29 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Nav = () => {
+export interface Props {
+  simple?: boolean;
+}
+
+const Nav: React.SFC<Props> = ({ simple }) => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.outerContainer}>
+    <Box className={classes.outerContainer} id="nav">
       <Box className={classes.innerContainer}>
         <Box className={classes.leftLinksContainer}>
           <Header />
-          <Link className={classes.link} to="/about">
-            <Typography className={classes.linkText}>How It Works</Typography>
-          </Link>
+          {!simple && (
+            <Link className={classes.link} to="/about">
+              <Typography className={classes.linkText}>How It Works</Typography>
+            </Link>
+          )}
         </Box>
-        <Link className={classes.link} to="/login">
-          <Typography>Log In</Typography>
-        </Link>
+        {!simple && (
+          <Link className={classes.link} to="/login">
+            <Typography>Log In</Typography>
+          </Link>
+        )}
       </Box>
     </Box>
   );
