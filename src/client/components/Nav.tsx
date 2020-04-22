@@ -37,7 +37,7 @@ const Nav: React.SFC<Props> = ({ simple }) => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.outerContainer}>
+    <Box className={classes.outerContainer} id="nav">
       <Box className={classes.innerContainer}>
         <Box className={classes.leftLinksContainer}>
           <Header />

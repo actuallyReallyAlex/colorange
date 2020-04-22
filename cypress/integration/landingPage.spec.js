@@ -23,7 +23,7 @@ context('Upload', () => {
   });
 
   it('Should display full Nav', () => {
-    cy.get('body').should('contain.text', 'How It Works');
-    cy.get('body').should('contain.text', 'Login');
+    cy.get('#nav').should('contain.text', 'How It Works');
+    cy.get('#nav').should('contain.text', 'Login');
   });
 });

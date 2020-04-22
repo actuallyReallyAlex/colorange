@@ -33,7 +33,7 @@ context('Upload', () => {
   });
 
   it('Should display simple Nav', () => {
-    cy.get('body').should('not.contain.text', 'How It Works');
-    cy.get('body').should('not.contain.text', 'Login');
+    cy.get('#nav').should('not.contain.text', 'How It Works');
+    cy.get('#nav').should('not.contain.text', 'Login');
   });
 });
