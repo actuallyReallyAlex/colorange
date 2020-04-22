@@ -31,4 +31,9 @@ context('Upload', () => {
 
     cy.get('body').should('contain.text', 'Your phone is unorganized.');
   });
+
+  it('Should display simple Nav', () => {
+    cy.get('body').should('not.contain.text', 'How It Works');
+    cy.get('body').should('not.contain.text', 'Login');
+  });
 });

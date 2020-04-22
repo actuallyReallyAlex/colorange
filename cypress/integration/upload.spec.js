@@ -32,4 +32,9 @@ context('Upload', () => {
 
     cy.get('#application-container').should('exist');
   });
+
+  it('Should display full Nav', () => {
+    cy.get('body').should('contain.text', 'How It Works');
+    cy.get('body').should('contain.text', 'Login');
+  });
 });

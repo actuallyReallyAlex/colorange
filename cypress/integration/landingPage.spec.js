@@ -21,4 +21,9 @@ context('Upload', () => {
       'Upload a csv document to see the sorted applications',
     );
   });
+
+  it('Should display full Nav', () => {
+    cy.get('body').should('contain.text', 'How It Works');
+    cy.get('body').should('contain.text', 'Login');
+  });
 });
