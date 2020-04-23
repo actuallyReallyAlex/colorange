@@ -42,7 +42,7 @@ const Nav: React.SFC<Props> = ({ simple }) => {
         <Box className={classes.leftLinksContainer}>
           <Header />
           {!simple && (
-            <Link className={classes.link} to="/about">
+            <Link className={classes.link} id="nav-about" to="/about">
               <Typography className={classes.linkText}>How It Works</Typography>
             </Link>
           )}
