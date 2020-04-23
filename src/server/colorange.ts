@@ -41,7 +41,14 @@ const colorange = async (
       (proc: AppProcess) => proc.id === processId,
     );
 
-    currentProcess.sortedData = sortedAppData;
+    const trimmedData = sortedAppData.map((appData: AppData) => ({
+      icon: {
+        base64: appData.icon.base64,
+      },
+      name: appData.name,
+    }));
+
+    currentProcess.sortedData = trimmedData;
     currentProcess.processing = false;
 
     return sortedAppData;
