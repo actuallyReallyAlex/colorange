@@ -24,7 +24,7 @@ export const getArtworkUrl = async (appName: string): Promise<string> => {
     term: appName,
     num: 1,
   });
-  return application[0].icon;
+  return application[0].icon.replace('512x512', '90x90');
 };
 
 export const rgb2Hsl = (colors: RGBColors): HSLColors => {
@@ -144,9 +144,7 @@ export const createApplicationInstance = async (
 
     const response = await fetch(application.icon.url);
     const buffer = await response.buffer();
-    // * Use Sharp to resize image
-    const resized = await sharp(buffer).resize(60, 60).toBuffer();
-    application.icon.base64 = resized.toString('base64');
+    application.icon.base64 = buffer.toString('base64');
 
     const v = new Vibrant(buffer);
     const palette = await v.getPalette();
