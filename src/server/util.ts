@@ -144,7 +144,9 @@ export const createApplicationInstance = async (
 
     const response = await fetch(application.icon.url);
     const buffer = await response.buffer();
-    application.icon.base64 = buffer.toString('base64');
+    // * Use Sharp to resize image
+    const resized = await sharp(buffer).resize(60, 60).toBuffer();
+    application.icon.base64 = resized.toString('base64');
 
     const v = new Vibrant(buffer);
     const palette = await v.getPalette();
