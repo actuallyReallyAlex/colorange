@@ -3,8 +3,6 @@ import { Box, Button, Paper, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableViews from 'react-swipeable-views';
 import AppPage from './AppPage';
-
-// import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
@@ -28,34 +26,29 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Phone = ({ processId, sorted }) => {
+const Phone = ({ applications, processId }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [apps, setApps] = React.useState([]);
   const [pages, setPages] = React.useState([]);
 
   React.useEffect(() => {
-    if (!sorted) {
-      setApps([]);
-      return;
-    }
-
     let newPages = [];
-    while (sorted.length) {
-      newPages.push(sorted.splice(0, 24));
+    while (applications.length) {
+      newPages.push(applications.splice(0, 24));
     }
     setPages(newPages);
     setApps(newPages[0]);
-  }, [sorted]);
+  }, [applications]);
 
   return (
     <Box className={classes.container}>
-      {!processId && !sorted && (
+      {!processId && pages.length > 0 && (
         <Typography variant="body1">
           Upload a csv document to see the sorted applications
         </Typography>
       )}
-      {sorted && (
+      {pages.length > 0 && (
         <Paper
           className={classes.paper}
           elevation={5}
