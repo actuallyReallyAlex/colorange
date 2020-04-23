@@ -28,14 +28,8 @@ const useStyles = makeStyles(() => ({
 
 const Application = (): JSX.Element => {
   const classes = useStyles();
-  const [sorted, setSorted] = useState(null);
   const [processId, setProcessId] = useState('');
   const [applications, setApplications] = useLocalStorage('applications', []);
-
-  useEffect(() => {
-    console.log(applications.length);
-    debugger;
-  }, [applications]);
 
   const handleInputChange = (e: { target: HTMLInputElement }): void => {
     if (!e.target.files[0]) {
@@ -65,7 +59,6 @@ const Application = (): JSX.Element => {
               response
                 .json()
                 .then((res) => {
-                  setSorted(res);
                   setApplications([...res]);
                   setProcessId('');
                   clearInterval(statusInterval);
@@ -85,11 +78,7 @@ const Application = (): JSX.Element => {
         <Box className={`main ${classes.mainContainer}`}>
           <Upload handleInputChange={handleInputChange} processId={processId} />
           {processId && <Typography variant="body1">LOADING</Typography>}
-          <Phone
-            applications={applications}
-            processId={processId}
-            // sorted={sorted}
-          />
+          <Phone applications={applications} processId={processId} />
         </Box>
       </Box>
     </Box>
