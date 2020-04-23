@@ -28,7 +28,7 @@ context('Application Page', () => {
 
     cy.get('body').should('contain.text', 'LOADING');
 
-    cy.wait(10000);
+    cy.wait(7500);
 
     cy.get('#application-container').should('exist');
   });

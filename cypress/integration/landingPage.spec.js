@@ -22,6 +22,17 @@ context('Landing Page', () => {
     );
   });
 
+  it('Should route to About Page', () => {
+    cy.get('body').should('contain.text', 'colorange');
+
+    cy.get('#nav-about').click();
+
+    cy.get('body').should(
+      'contain.text',
+      'Colorange is an opensource tool to help you organize your applications on your phone by color.',
+    );
+  });
+
   it('Should display full Nav', () => {
     cy.get('#nav').should('contain.text', 'How It Works');
     // cy.get('#nav').should('contain.text', 'Log In');
