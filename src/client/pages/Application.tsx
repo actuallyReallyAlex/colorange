@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Header from '../components/Header';
 import Upload from '../components/Upload';
 import Phone from '../components/Phone';
 import Nav from '../components/Nav';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const useStyles = makeStyles(() => ({
   innerContainer: {
@@ -28,8 +28,8 @@ const useStyles = makeStyles(() => ({
 
 const Application = (): JSX.Element => {
   const classes = useStyles();
-  const [sorted, setSorted] = useState(null);
   const [processId, setProcessId] = useState('');
+  const [applications, setApplications] = useLocalStorage('applications', []);
 
   const handleInputChange = (e: { target: HTMLInputElement }): void => {
     if (!e.target.files[0]) {
@@ -59,7 +59,7 @@ const Application = (): JSX.Element => {
               response
                 .json()
                 .then((res) => {
-                  setSorted(res);
+                  setApplications([...res]);
                   setProcessId('');
                   clearInterval(statusInterval);
                 })
@@ -77,10 +77,8 @@ const Application = (): JSX.Element => {
         <Nav />
         <Box className={`main ${classes.mainContainer}`}>
           <Upload handleInputChange={handleInputChange} processId={processId} />
-
           {processId && <Typography variant="body1">LOADING</Typography>}
-
-          <Phone processId={processId} sorted={sorted} />
+          <Phone applications={applications} processId={processId} />
         </Box>
       </Box>
     </Box>

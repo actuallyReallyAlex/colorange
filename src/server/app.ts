@@ -77,6 +77,7 @@ class App {
 
     this.app.use(express.static(path.join(__dirname, '../dist')));
 
+    // TODO - Remove this if you're just going to do the same thing for '*'
     this.app.get('/app', (req: Request, res: Response) => {
       res.sendFile(path.join(__dirname, '../dist/index.html'));
     });
