@@ -32,6 +32,13 @@ export interface AppData {
   name: string;
 }
 
+export interface TrimmedData {
+  icon: {
+    base64: string;
+  };
+  name: string;
+}
+
 export type AppStoreScraperApp = {
   id: number;
   appId: string;
@@ -71,5 +78,5 @@ export type AppStoreScraperApp = {
 export type AppProcess = {
   id: string;
   processing: boolean;
-  sortedData?: AppData[];
+  sortedData?: TrimmedData[];
 };
