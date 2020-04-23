@@ -43,7 +43,7 @@ const Phone = ({ applications, processId }) => {
 
   return (
     <Box className={classes.container}>
-      {!processId && pages.length > 0 && (
+      {!processId && (
         <Typography variant="body1">
           Upload a csv document to see the sorted applications
         </Typography>
