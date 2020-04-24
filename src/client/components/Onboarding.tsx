@@ -1,13 +1,9 @@
 import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Box,
-  Stepper,
-  Step,
-  StepLabel,
-  Typography,
-  Button,
-} from '@material-ui/core';
+import { Box, Stepper, Step, StepLabel } from '@material-ui/core';
+import OnboardingStep1 from './OnboardingStep1';
+import OnboardingStep2 from './OnboardingStep2';
+import OnboardingStep3 from './OnboardingStep3';
 
 const useStyles = makeStyles(() => ({
   onboardingContainer: {
@@ -18,61 +14,25 @@ const useStyles = makeStyles(() => ({
   stepper: {
     marginBottom: '50px',
   },
-  step1Container: {
-    display: 'flex',
-    flexDirection: 'column',
-    margin: '0 auto',
-  },
-  step1CTAContainer: {
-    display: 'flex',
-    justifyContent: 'space-evenly',
-    marginTop: '50px',
-  },
 }));
 
 export interface OnboardingProps {
   setHasOnboarded: Function;
 }
 
-const Onboarding: React.SFC<OnboardingProps> = () => {
+const Onboarding: React.SFC<OnboardingProps> = ({ setHasOnboarded }) => {
   const classes = useStyles();
-  const [currentStep, setCurrrentStep] = React.useState(0);
+  const [currentStep, setCurrentStep] = React.useState(0);
 
   const steps = {
-    0: () => (
-      <Box className={classes.step1Container}>
-        <Typography variant="body1">
-          Apple Configurator 2 is a program used to export a list of your
-          installed applications in the format Colorange needs.
-        </Typography>
-        <Typography variant="body1">
-          Return to this page when the application is installed.
-        </Typography>
-        <Box className={classes.step1CTAContainer}>
-          <Button
-            color="primary"
-            onClick={() =>
-              window.open(
-                'https://apps.apple.com/us/app/apple-configurator-2/id1037126344?mt=12',
-                '_blank',
-              )
-            }
-            variant="contained"
-          >
-            Visit Apple Configurator 2
-          </Button>
-          <Button
-            color="secondary"
-            onClick={() => setCurrrentStep(1)}
-            variant="contained"
-          >
-            I have installed Apple Configurator 2
-          </Button>
-        </Box>
-      </Box>
+    0: () => <OnboardingStep1 setCurrentStep={setCurrentStep} />,
+    1: () => <OnboardingStep2 setCurrentStep={setCurrentStep} />,
+    2: () => (
+      <OnboardingStep3
+        setCurrentStep={setCurrentStep}
+        setHasOnboarded={setHasOnboarded}
+      />
     ),
-    1: () => <span>STEP 2</span>,
-    2: () => <span>STEP 3</span>,
   };
 
   return (
@@ -82,10 +42,10 @@ const Onboarding: React.SFC<OnboardingProps> = () => {
           <StepLabel>Install Apple Configurator 2</StepLabel>
         </Step>
         <Step>
-          <StepLabel>Step Two</StepLabel>
+          <StepLabel>Connect Phone</StepLabel>
         </Step>
         <Step>
-          <StepLabel>Step Three</StepLabel>
+          <StepLabel>Upload Application List</StepLabel>
         </Step>
       </Stepper>
       {steps[currentStep]()}

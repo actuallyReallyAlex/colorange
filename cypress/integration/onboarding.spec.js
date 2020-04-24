@@ -8,20 +8,27 @@
 
 context('About Page', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000/about');
+    cy.visit('http://localhost:3000');
+    cy.get('#cta').click();
   });
 
-  it('Should display about page', () => {
+  it('Should display onboarding if user is new.', () => {
+    cy.get('body').should('contain.text', 'Install Apple Configurator 2');
+  });
+
+  it('Should have user go through onboarding.', () => {
+    cy.get('#onboarding-primary-1').click();
     cy.get('body').should(
       'contain.text',
-      'Colorange is an opensource tool to help you organize your applications on your phone by color.',
+      'Open Apple Configurator 2 and connect your phone via USB cable.',
     );
-  });
 
-  it('Should route to /app when CTA primary is clicked', () => {
-    cy.get('#about-cta-primary').click();
-    cy.get('#onboarding-primary-1').click();
     cy.get('#onboarding-primary-2').click();
+    cy.get('body').should(
+      'contain.text',
+      'Continue on to upload your exported application list to Colorange.',
+    );
+
     cy.get('#onboarding-primary-3').click();
     cy.get('body').should(
       'contain.text',

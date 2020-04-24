@@ -19,7 +19,7 @@ const App = () => {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Application />
+            <Landing />
           </Route>
           <Route exact path="/app">
             <Application />
