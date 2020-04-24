@@ -28,6 +28,7 @@
 - [Built Using](#built_using)
 - [Authors](#authors)
 - [Acknowledgments](#acknowledgement)
+- [Changelog](#changelog)
 
 ## 🧐 About <a name = "about"></a>
 
@@ -117,4 +118,7 @@ What you need to use Colorange
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
 - Colorange icon made by [Nikita Golubev](https://www.flaticon.com/authors/nikita-golubev) from [www.flaticon.com](https://www.flaticon.com/)
-  Hat tip to anyone whose code was used
+
+## 📝 Changelog <a name = "changelog"></a>
+
+- [CHANGELOG](../CHANGELOG.md)
