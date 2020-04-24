@@ -5,6 +5,7 @@ import Upload from '../components/Upload';
 import Phone from '../components/Phone';
 import Nav from '../components/Nav';
 import useLocalStorage from '../hooks/useLocalStorage';
+import Onboarding from '../components/Onboarding';
 
 const useStyles = makeStyles(() => ({
   innerContainer: {
@@ -24,12 +25,20 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     justifyContent: 'center',
   },
+  onboardingMainContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
 }));
 
 const Application = (): JSX.Element => {
   const classes = useStyles();
   const [processId, setProcessId] = useState('');
   const [applications, setApplications] = useLocalStorage('applications', []);
+  const [hasOnboarded, setHasOnboarded] = useLocalStorage(
+    'hasOnboarded',
+    false,
+  );
 
   const handleInputChange = (e: { target: HTMLInputElement }): void => {
     if (!e.target.files[0]) {
@@ -75,10 +84,24 @@ const Application = (): JSX.Element => {
     <Box className={classes.outerContainer}>
       <Box className={classes.innerContainer}>
         <Nav />
-        <Box className={`main ${classes.mainContainer}`}>
-          <Upload handleInputChange={handleInputChange} processId={processId} />
-          {processId && <Typography variant="body1">LOADING</Typography>}
-          <Phone applications={applications} processId={processId} />
+        <Box
+          className={`main ${
+            !hasOnboarded
+              ? classes.onboardingMainContainer
+              : classes.mainContainer
+          }`}
+        >
+          {!hasOnboarded && <Onboarding setHasOnboarded={setHasOnboarded} />}
+          {hasOnboarded && (
+            <>
+              <Upload
+                handleInputChange={handleInputChange}
+                processId={processId}
+              />
+              {processId && <Typography variant="body1">LOADING</Typography>}
+              <Phone applications={applications} processId={processId} />
+            </>
+          )}
         </Box>
       </Box>
     </Box>

@@ -15,7 +15,9 @@ context('Landing Page', () => {
     cy.get('body').should('contain.text', 'colorange');
 
     cy.get('#cta').click();
-
+    cy.get('#onboarding-primary-1').click();
+    cy.get('#onboarding-primary-2').click();
+    cy.get('#onboarding-primary-3').click();
     cy.get('body').should(
       'contain.text',
       'Upload a csv document to see the sorted applications',

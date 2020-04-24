@@ -9,6 +9,13 @@
 context('Application Page', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/app');
+    cy.get('#onboarding-primary-1').click();
+    cy.get('#onboarding-primary-2').click();
+    cy.get('#onboarding-primary-3').click();
+    cy.get('body').should(
+      'contain.text',
+      'Upload a csv document to see the sorted applications',
+    );
   });
 
   it('Should handle uploading a correct csv file', () => {
