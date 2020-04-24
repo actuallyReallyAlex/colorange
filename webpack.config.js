@@ -36,7 +36,10 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template:
+        webpackMode === 'production'
+          ? './public/production.html'
+          : './public/index.html',
     }),
   ],
   module: {
