@@ -6,6 +6,8 @@ import Phone from '../components/Phone';
 import Nav from '../components/Nav';
 import useLocalStorage from '../hooks/useLocalStorage';
 import Onboarding from '../components/Onboarding';
+import useMedia from '../hooks/useMedia';
+import ResponsiveImage from '../assets/responsive.svg';
 
 const useStyles = makeStyles(() => ({
   innerContainer: {
@@ -29,6 +31,21 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
   },
+  responsiveImage: {
+    height: '150px',
+  },
+  responsiveHeading: {
+    fontSize: '2rem',
+    marginBottom: '25px',
+    marginTop: '25px',
+  },
+  responsiveContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    margin: '0 auto',
+    maxWidth: '90%',
+  },
 }));
 
 const Application = (): JSX.Element => {
@@ -39,6 +56,14 @@ const Application = (): JSX.Element => {
     'hasOnboarded',
     false,
   );
+
+  const size = useMedia(
+    ['(max-width: 420px)', '(min-width: 400px)'],
+    ['small', 'large'],
+    'large',
+  );
+
+  console.log({ size });
 
   const handleInputChange = (e: { target: HTMLInputElement }): void => {
     if (!e.target.files[0]) {
@@ -84,25 +109,45 @@ const Application = (): JSX.Element => {
     <Box className={classes.outerContainer}>
       <Box className={classes.innerContainer}>
         <Nav />
-        <Box
-          className={`main ${
-            !hasOnboarded
-              ? classes.onboardingMainContainer
-              : classes.mainContainer
-          }`}
-        >
-          {!hasOnboarded && <Onboarding setHasOnboarded={setHasOnboarded} />}
-          {hasOnboarded && (
-            <>
-              <Upload
-                handleInputChange={handleInputChange}
-                processId={processId}
-              />
-              {processId && <Typography variant="body1">LOADING</Typography>}
-              <Phone applications={applications} processId={processId} />
-            </>
-          )}
-        </Box>
+        {size === 'small' && (
+          <Box className={`main ${classes.responsiveContainer}`}>
+            <img
+              alt="Please use Colorange on a larger device."
+              className={classes.responsiveImage}
+              src={ResponsiveImage}
+            />
+            <Typography className={classes.responsiveHeading} variant="h2">
+              This device isn't large enough.
+            </Typography>
+            <Typography variant="body1">
+              We're sorry. Colorange works best on larger devices like desktops
+              or laptops. Please access Colorange from a larger device. We are
+              adding mobile support in future updates soon. Thank you for
+              understanding.
+            </Typography>
+          </Box>
+        )}
+        {size !== 'small' && (
+          <Box
+            className={`main ${
+              !hasOnboarded
+                ? classes.onboardingMainContainer
+                : classes.mainContainer
+            }`}
+          >
+            {!hasOnboarded && <Onboarding setHasOnboarded={setHasOnboarded} />}
+            {hasOnboarded && (
+              <>
+                <Upload
+                  handleInputChange={handleInputChange}
+                  processId={processId}
+                />
+                {processId && <Typography variant="body1">LOADING</Typography>}
+                <Phone applications={applications} processId={processId} />
+              </>
+            )}
+          </Box>
+        )}
       </Box>
     </Box>
   );
