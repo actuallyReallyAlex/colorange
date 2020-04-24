@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+/* global window */
 
 const useMedia = (queries, values, defaultValue) => {
   // Array containing a media query list for each query
