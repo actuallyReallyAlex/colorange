@@ -121,4 +121,4 @@ What you need to use Colorange
 
 ## 📝 Changelog <a name = "changelog"></a>
 
-- [CHANGELOG](../CHANGELOG.md)
+- [CHANGELOG](CHANGELOG.md)
