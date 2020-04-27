@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Box, Typography } from '@material-ui/core';
+import { Box, IconButton, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import GitHub from '@material-ui/icons/GitHub';
 import { Link } from 'react-router-dom';
 import Header from './Header';
 import useMedia from '../hooks/useMedia';
@@ -53,6 +54,15 @@ const Nav: React.SFC<Props> = ({ simple }) => {
             </Link>
           )}
         </Box>
+
+        <IconButton
+          aria-label="GitHub Source"
+          onClick={() =>
+            window.open('https://github.com/alexlee-dev/colorange', '_blank')
+          }
+        >
+          <GitHub />
+        </IconButton>
         {/* {!simple && (
           <Link className={classes.link} to="/login">
             <Typography>Log In</Typography>
