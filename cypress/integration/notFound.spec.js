@@ -20,6 +20,8 @@ context('404 Page', () => {
       'contain.text',
       "Sorry, we can't find the page you were looking for.",
     );
+
+    cy.percySnapshot();
   });
 
   it('Should allow user to go back', () => {

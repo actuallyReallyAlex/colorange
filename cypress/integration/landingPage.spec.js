@@ -14,6 +14,8 @@ context('Landing Page', () => {
   it('Should route to app', () => {
     cy.get('body').should('contain.text', 'colorange');
 
+    cy.percySnapshot();
+
     cy.get('#cta').click();
     cy.get('#onboarding-primary-1').click();
     cy.get('#onboarding-primary-2').click();

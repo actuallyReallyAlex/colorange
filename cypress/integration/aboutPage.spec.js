@@ -16,6 +16,7 @@ context('About Page', () => {
       'contain.text',
       'Colorange is an opensource tool to help you organize your applications on your phone by color.',
     );
+    cy.percySnapshot();
   });
 
   it('Should route to /app when CTA primary is clicked', () => {

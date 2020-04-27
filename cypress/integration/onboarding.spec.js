@@ -14,6 +14,7 @@ context('About Page', () => {
 
   it('Should display onboarding if user is new.', () => {
     cy.get('body').should('contain.text', 'Install Apple Configurator 2');
+    cy.percySnapshot();
   });
 
   it('Should have user go through onboarding.', () => {
