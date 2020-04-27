@@ -3,8 +3,9 @@ import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import Header from './Header';
+import useMedia from '../hooks/useMedia';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   innerContainer: {
     alignItems: 'center',
     display: 'flex',
@@ -25,15 +26,20 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#0b0033',
     color: 'white',
     display: 'flex',
-    padding: '30px 0',
+    padding: '30px',
   },
-}));
+});
 
 export interface Props {
   simple?: boolean;
 }
 
 const Nav: React.SFC<Props> = ({ simple }) => {
+  const size = useMedia(
+    ['(max-width: 800px)', '(min-width: 800px)'],
+    ['small', 'large'],
+    'large',
+  );
   const classes = useStyles();
 
   return (
@@ -41,7 +47,7 @@ const Nav: React.SFC<Props> = ({ simple }) => {
       <Box className={classes.innerContainer}>
         <Box className={classes.leftLinksContainer}>
           <Header />
-          {!simple && (
+          {!simple && size !== 'small' && (
             <Link className={classes.link} id="nav-about" to="/about">
               <Typography className={classes.linkText}>How It Works</Typography>
             </Link>
