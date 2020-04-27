@@ -4,7 +4,8 @@
   "description": "Organize your apps on your phone by color.",
   "main": "build/index.js",
   "files": [
-    "build/"
+    "build/",
+    "dist/"
   ],
   "scripts": {
     "build": "npm run build-client && npm run build-server",
