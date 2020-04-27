@@ -16,7 +16,7 @@
     "dev": "env-cmd -e development npm start",
     "format": "prettier --write .",
     "lint": "eslint \"src/**/*.ts\"",
-    "percy": "percy exec -- cy:run",
+    "percy": "percy exec -- cypress run",
     "start": "node --no-warnings build/index.js",
     "start:dev": "start-server-and-test dev http://localhost:3000 webpack-dev-server",
     "test": "start-server-and-test test-server-CI http://localhost:3000 percy",
