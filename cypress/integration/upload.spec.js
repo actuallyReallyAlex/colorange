@@ -21,6 +21,8 @@ context('Application Page', () => {
   it('Should handle uploading a correct csv file', () => {
     cy.get('body').should('contain.text', 'colorange');
 
+    cy.percySnapshot();
+
     cy.fixture('example.csv', 'binary')
       .then(Cypress.Blob.binaryStringToBlob)
       .then((fileContent) => {
