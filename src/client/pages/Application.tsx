@@ -58,7 +58,7 @@ const Application = (): JSX.Element => {
   );
 
   const size = useMedia(
-    ['(max-width: 420px)', '(min-width: 400px)'],
+    ['(max-width: 800px)', '(min-width: 800px)'],
     ['small', 'large'],
     'large',
   );

@@ -3,8 +3,13 @@ import { Box, Typography, Button } from '@material-ui/core';
 import HeroImage from '../assets/hero.svg';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import useMedia from '../hooks/useMedia';
 
-const useStyles = makeStyles(() => ({
+interface HeroStyleProps {
+  size: 'large' | 'small';
+}
+
+const useStyles = makeStyles({
   cta: {
     color: 'rgba(0, 0, 0, 0.87)',
     fontSize: '1.2rem',
@@ -16,10 +21,14 @@ const useStyles = makeStyles(() => ({
     height: '90vh',
   },
   heroHeading: {
+    fontSize: (props: HeroStyleProps) =>
+      props.size === 'large' ? '6rem' : '2.5rem',
     fontWeight: 700,
     marginBottom: '20px',
   },
   heroImage: {
+    display: (props: HeroStyleProps) =>
+      props.size === 'large' ? 'block' : 'none',
     height: '500px',
     position: 'absolute',
     right: '0',
@@ -31,7 +40,8 @@ const useStyles = makeStyles(() => ({
   heroInnerContainer: {
     alignItems: 'center',
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: (props: HeroStyleProps) =>
+      props.size === 'large' ? 'row' : 'column',
     maxWidth: '1200px',
     margin: '0 auto',
     width: '1200px',
@@ -44,13 +54,20 @@ const useStyles = makeStyles(() => ({
   },
   heroSubheading: {
     color: 'rgba(255,255,255,.5)',
-    fontSize: '34px',
+    fontSize: (props: HeroStyleProps) =>
+      props.size === 'large' ? '34px' : '2rem',
     marginBottom: '20px',
   },
-}));
+});
 
 const Hero = () => {
-  const classes = useStyles();
+  const size = useMedia(
+    ['(max-width: 800px)', '(min-width: 800px)'],
+    ['small', 'large'],
+    'large',
+  );
+  const props = { size };
+  const classes = useStyles(props);
 
   const addMarginToImage = () => {
     const container = document.getElementById('hero-inner-container');
